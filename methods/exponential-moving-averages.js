@@ -156,11 +156,15 @@ TradingMethod.prototype.advice = function() {
   if(diff > settings.buyTreshold) {
     log.debug('we are currently in uptrend (' + diff + ')');
 
-    if(this.currentTrend !== 'up') {
-      this.currentTrend = 'up';
-      this.emit('advice', 'BUY', price, message);
-    } else
-      this.emit('advice', 'HOLD', price, message);
+// *** buyTreshold is now honored unconditionally ***
+    this.emit('advice', 'BUY', price, message);
+
+// *** this commented out code only buys during start of an up trend ***
+//    if(this.currentTrend !== 'up') {
+//      this.currentTrend = 'up';
+//      this.emit('advice', 'BUY', price, message);
+//    } else
+//      this.emit('advice', 'HOLD', price, message);
 
   } else if(diff < settings.sellTreshold) {
     log.debug('we are currently in a downtrend', message);

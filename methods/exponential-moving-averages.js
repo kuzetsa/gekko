@@ -161,7 +161,7 @@ TradingMethod.prototype.advice = function() {
 
 // *** this commented out code only buys during start of an up trend ***
 //    if(this.currentTrend !== 'up') {
-//      this.currentTrend = 'up';
+    this.currentTrend = 'up';
 //      this.emit('advice', 'BUY', price, message);
 //    } else
 //      this.emit('advice', 'HOLD', price, message);

@@ -164,8 +164,8 @@ Trader.prototype.getPortfolio = function(callback) {
     if(err)
       return this.retry(this.cexio.getInfo, calculate);
 
-    currency = parseFloat(data.BTC.available) - parseFloat(data.BTC.orders);
-    assets = parseFloat(data.GHS.available) - parseFloat(data.GHS.orders);
+    currency = parseFloat(data.BTC.available) - (data.BTC.orders ? parseFloat(data.BTC.orders): 0);
+    assets = parseFloat(data.GHS.available) - (data.GHS.orders ? parseFloat(data.GHS.orders) : 0);
 
     var portfolio = [];
     portfolio.push({name: 'BTC', amount: currency});

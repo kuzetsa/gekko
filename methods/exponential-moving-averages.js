@@ -154,7 +154,7 @@ TradingMethod.prototype.advice = function() {
     message += '\tat \t' + moment.unix(this.currentTimestamp).format('YYYY-MM-DD HH:mm:ss');
 
   if(diff > settings.buyTreshold) {
-    log.debug('we are currently in uptrend (' + diff + ')');
+    log.info('we are currently in uptrend (' + diff + ')');
 
 // *** buyTreshold is now honored unconditionally ***
     this.emit('advice', 'BUY', price, message);
@@ -167,7 +167,7 @@ TradingMethod.prototype.advice = function() {
 //      this.emit('advice', 'HOLD', price, message);
 
   } else if(diff < settings.sellTreshold) {
-    log.debug('we are currently in a downtrend', message);
+    log.info('we are currently in a downtrend', message);
 
     if(this.currentTrend !== 'down') {
       this.currentTrend = 'down';
@@ -176,7 +176,7 @@ TradingMethod.prototype.advice = function() {
       this.emit('advice', 'HOLD', price, message);
 
   } else {
-    log.debug('we are currently not in an up or down trend', message);
+    log.info('we are currently not in an up or down trend', message);
     this.emit('advice', 'HOLD', price, message);
   }
 }

@@ -8,15 +8,18 @@
 */
 
 var _ = require('lodash');
-// var EventEmitter = require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 var Util = require("util");
 var util = require('./util')
 var events = require("events");
 var log = require('./log');
 var async = require('async');
+var exchangeChecker = require('./exchangeChecker.js');
+var exchanges = require('./exchanges.js');
 
-var Manager = function(conf, checker) {
+var Manager = function(conf) {
   this.exchangeSlug = conf.exchange.toLowerCase();
+  var exchange = _.find(exchanges, function(e) { return e.slug === this.exchangeSlug }, this);
 
   // create an exchange
   var Exchange = require('./exchanges/' + this.exchangeSlug);
@@ -29,17 +32,14 @@ var Manager = function(conf, checker) {
   this.order;
   this.action;
 
+  this.directExchange = exchange.direct;
+  this.infinityOrderExchange = exchange.infinityOrder;
+  this.minimalOrder = exchange.minimalOrder;
+
   this.currency = conf.currency || 'USD';
   this.asset = conf.asset || 'BTC';
 
-  var error = this.checkExchange();
-  if(error && !checker)
-    throw error;
-
   _.bindAll(this);
-
-  if(checker)
-    return;
 
   log.debug('getting balance & fee from', this.exchange.name);
   var prepare = function() {
@@ -47,121 +47,23 @@ var Manager = function(conf, checker) {
 
     log.info('trading at', this.exchange.name, 'ACTIVE');
     log.info(this.exchange.name, 'trading fee will be:', this.fee * 100 + '%');
-    log.info('current', this.exchange.name, 'portfolio:');
-    _.each(this.portfolio, function(fund) {
-      log.info('\t', fund.name + ':', fund.amount);
-    });
+    this.logPortfolio();
     this.emit('ready');
   };
-
-  // callback function to DISPLAY portfolio stats
-  var refreshPortfolioBeforeYouCanDisplay = function() {
-    log.info('refreshed', this.exchange.name, 'portfolio:');
-    _.each(this.portfolio, function(fund) {
-      log.info('\t', fund.name + ':', fund.amount);
-    });
-  };
-
-  // callback function to REFRESH portfolio stats
-  var displayPortfolio = function() {
-	  // lazy way to do it without a major rewrite
-	  async.series([
-	                this.setPortfolio
-	                ], _.bind(refreshPortfolioBeforeYouCanDisplay, this));
-  };
-
-  // refresh and display portfolio stats every 11 minutes
-  setInterval(_.bind(displayPortfolio, this), util.minToMs( 11 ));
 
   async.series([
     this.setPortfolio,
     this.setFee
   ], _.bind(prepare, this));
+
+  // Because on cex.io your asset grows refresh and
+  // display portfolio stats every 11 minutes
+  if(this.exchange.name === 'cex.io')
+    setInterval(this.displayPortfolio, util.minToMs( 11 ));
 }
 
 // teach our Manager events
 Util.inherits(Manager, events.EventEmitter);
-
-Manager.prototype.validCredentials = function() {
-  return !this.checkExchange();
-}
-
-Manager.prototype.checkExchange = function() {
-  // what kind of exchange are we dealing with?
-  // 
-  // name: slug of exchange
-  // direct: does this exchange support MKT orders?
-  // infinityOrder: is this an exchange that supports infinity 
-  //    orders? (which means that it will accept orders bigger then
-  //    the current balance and order at the full balance instead)
-  // currencies: all the currencies supported by the exchange
-  //    implementation in gekko.
-  // assets: all the assets supported by the exchange implementation
-  //    in gekko.
-  var exchanges = [
-    {
-      name: 'mtgox',
-      direct: true,
-      infinityOrder: true,
-      currencies: [
-        'USD', 'EUR', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY',
-        'DKK', 'HKD', 'PLN', 'RUB', 'SGD', 'THB'
-      ],
-      assets: ['BTC'],
-      requires: ['key', 'secret'],
-      minimalOrder: { amount: 0.01, unit: 'asset' }
-    },
-    {
-      name: 'btce',
-      direct: false,
-      infinityOrder: false,
-      currencies: ['USD', 'RUR', 'EUR'],
-      assets: ['BTC'],
-      requires: ['key', 'secret'],
-      minimalOrder: { amount: 0.01, unit: 'asset' }
-    },
-    {
-      name: 'bitstamp',
-      direct: false,
-      infinityOrder: false,
-      currencies: ['USD'],
-      assets: ['BTC'],
-      requires: ['key', 'secret', 'username'],
-      minimalOrder: { amount: 1, unit: 'currency' }
-    },
-    {
-      name: 'cexio',
-      direct: false,
-      infinityOrder: false,
-      currencies: ['BTC'],
-      assets: ['GHS'],
-      requires: ['key', 'secret', 'username'],
-      minimalOrder: { amount: 0.000001, unit: 'currency' }
-    }
-  ];
-  var exchange = _.find(exchanges, function(e) { return e.name === this.exchangeSlug }, this);
-  if(!exchange)
-    return 'Gekko does not support the exchange ' + this.exchangeSlug;
-
-  this.directExchange = exchange.direct;
-  this.infinityOrderExchange = exchange.infinityOrder;
-  if(_.indexOf(exchange.currencies, this.currency) === -1)
-    return 'Gekko does not support the currency ' + this.currency + ' at ' + this.exchange.name;
-
-  if(_.indexOf(exchange.assets, this.asset) === -1)
-    return 'Gekko does not support the asset ' + this.asset + ' at ' + this.exchange.name;
-
-  var ret;
-  _.each(exchange.requires, function(req) {
-    if(!this.conf[req])
-      ret = this.exchange.name + ' requires "' + req + '" to be set in the config';
-  }, this);
-
-  this.minimalOrder = exchange.minimalOrder;
-
-  return ret;
-
-}
 
 Manager.prototype.setPortfolio = function(callback) {
   var set = function(err, portfolio) {
@@ -327,6 +229,17 @@ Manager.prototype.checkOrder = function() {
   }
 
   this.exchange.checkOrder(this.order, _.bind(finish, this));
+}
+
+Manager.prototype.logPortfolio = function() {
+  log.info('refreshed', this.exchange.name, 'portfolio:');
+  _.each(this.portfolio, function(fund) {
+    log.info('\t', fund.name + ':', fund.amount);
+  });
+}
+
+Manager.prototype.displayPortfolio = function() {
+  this.setPortfolio(this.logPorfolio);
 }
 
 module.exports = Manager;

@@ -28,13 +28,13 @@ config.EMA = {
 // Monitor the live market
 config.normal = {
   enabled: true,
-  exchange: 'MtGox', // 'MtGox', 'BTCe', 'Bitstamp' or 'cexio'
-  currency: 'USD',
-  asset: 'BTC',
+  exchange: 'cexio', // 'MtGox', 'BTCe', 'Bitstamp' or 'cexio'
+  currency: 'BTC',
+  asset: 'GHS',
   tradingEnabled: false,
   key: 'your-key',
   secret: 'your-secret',
-  username: 0, // your username, only fill in when using bitstamp or cexio
+  username: 0,
 }
 
 // want Gekko to send a mail on buy or sell advice?
@@ -68,9 +68,9 @@ config.profitCalculator = {
     currency: 100,
   },
   // only want report after a sell? set to `false`.
-  verbose: false,
+  verbose: true, // personal preference
   // how much fee in % does each trade cost?
-  fee: 0.6
+  fee: 0 //cex has no fee at the moment
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,9 +99,10 @@ config.backtest = {
 
 // monitor what market?
 config.watch = {
-  exchange: 'MtGox',
-  currency: 'USD',
-  asset: 'BTC'
+  enabled: true,
+  exchange: 'cexio',
+  currency: 'BTC',
+  asset: 'GHS'
 }
 
 // real trading
@@ -140,7 +141,7 @@ config.traders = [
   }
 ];
 
-config.debug = false; // for additional logging / debugging
+config.debug = true; // for additional logging / debugging
 
 module.exports = config;
 

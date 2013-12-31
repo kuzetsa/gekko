@@ -2,6 +2,7 @@ var email = require("emailjs");
 var moment = require('moment');
 var log = require('./log.js');
 var util = require('./util.js');
+var _ = require('lodash');
 var config = util.getConfig().mail;
 var server;
 
@@ -62,7 +63,7 @@ var send = function(err) {
 }
 
 module.exports.send = function(what, price, meta) {
-  if(what !== 'BUY' && what !== 'SELL')
+  if (!_.contains(config.what, what))
     return;
 
   var text = [

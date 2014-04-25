@@ -283,6 +283,23 @@ var exchanges = [
     requires: ['key', 'secret'],
     monitorError: 'https://github.com/askmike/gekko/issues/210',
     providesHistory: false
+  },
+  {
+    name: 'Bitfinex',
+    slug: 'bitfinex',
+    direct: false,
+    infinityOrder: false,
+    currencies: ['USD'],
+    assets: ['BTC'],
+    markets: [
+      {
+        pair: ['USD', 'BTC'], minimalOrder: { amount: 0.01, unit: 'currency' }
+      }
+    ],
+    requires: ['key', 'secret'],
+    // TODO: should be possible to enable this for Bitfinex?
+    providesHistory: false
+    // fetchTimespan: 60
   }
 ];
 

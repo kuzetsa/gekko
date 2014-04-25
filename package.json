@@ -19,7 +19,7 @@
     "btc-e": "0.0.x",
     "cexio": "0.0.x",
     "bitstamp": "0.1.x",
-    "bitfinex": "git+https://github.com/naddison36/bitfinex.git"
+    "bitfinex": "git+https://github.com/naddison36/bitfinex.git",
     "async": "0.2.x",
     "nedb": "0.9.4",
     "line-reader": "0.2.x",

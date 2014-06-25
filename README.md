@@ -6,9 +6,7 @@
 
 ## Gekko (*this tool / bot*)
 
-This tool is based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer), and is written the [node.js](https://github.com/joyent/node) dialect of javascript, which itself based on v8, Google's open source JavaScript engine.
-
-*Use Gekko at you own risk.*
+This tool is based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer), and is written the [node.js](https://github.com/joyent/node) dialect of javascript, which itself based on v8, Google's open source JavaScript engine. **WARNING:** *Use Gekko at you own risk.*
 
 ## Automated reinvestment
 

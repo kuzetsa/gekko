@@ -1,26 +1,28 @@
-# Important note
+### Gekko (*origin of the name*)
 
-You are looking at the brand new and completetly different version of Gekko. We've tested it for quite a while though it might be possible that you encounter bugs. If you encounter a bug: check out in [the issues](https://github.com/kuzetsa/gekko/issues/) if we are aware of it and if not create a new one :)
+#### 1987 movie "Wall Street"
+> *The most valuable commodity I know of is information.*
+> -- Gordon Gekko
 
-# Gekko
+## Gekko (*this tool / bot*)
 
-*The most valuable commodity I know of is information.*
-
--Gordon Gekko
-
-Gekko is a cloud mining reinvestment platform which based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer)
-
-It is written in javascript and runs on [node.js](https://github.com/joyent/node). 
+This tool is based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer), and is written the [node.js](https://github.com/joyent/node) dialect of javascript, which itself based on v8, Google's open source JavaScript engine.
 
 *Use Gekko at you own risk.*
 
-**Automated reinvestment**
+## Automated reinvestment
 
-Gekko comes with a few [technical analysis (TA)](http://en.wikipedia.org/wiki/Technical_analysis) methods which implement a single indicator (DEMA, MACD, RSI and PPO). The parameters of these indicators are all configurable and changing them changes the outcome drastically. Additionally Gekko also provides an easy way to write your own trading methods in javascript. Read more about that in the [documentation](https://github.com/kuzetsa/gekko/blob/master/docs/internals/trading_methods.md). 
+Gekko comes with a few [technical analysis (TA)](http://en.wikipedia.org/wiki/Technical_analysis) methods which implement a single indicator (*DEMA, MACD, RSI, and PPO*). The parameters of these indicators are all configurable and changing them changes the outcome drastically. Gekko's interface allows you to add your own trading methods. Read more about that in the [documentation](https://github.com/kuzetsa/gekko/blob/master/docs/internals/trading_methods.md). 
 
 **Note:** *much of this information is outdated, and/or not relevant to reinvestment-only mode.*
 
-## Market interface
+## Supported exchanges
+
+Gekko reinvests cloud mining income on the following platforms:
+
+- CEX.io
+
+## Plugin interface
 
 Gekko also has a plugin system that can do certain things whenever something happens or let Gekko communicate through more platforms. Gekko implements the following example plugins:
 
@@ -29,12 +31,6 @@ Gekko also has a plugin system that can do certain things whenever something hap
 - Mailer: Automatically sends email when your trading method has new advice.
 - Profit Simulator (paper trader): Hold a fake portfolio and simulate trades based on advice.
 - Redis Beacon: Broadcast events propagating through Gekko on [Redis pub/sub](http://redis.io/topics/pubsub).
-
-## Supported exchanges
-
-Gekko reinvests cloud mining income on the following platforms:
-
-- CEX.io
 
 ## Installing Gekko
 

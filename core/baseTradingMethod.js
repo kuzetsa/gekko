@@ -58,8 +58,9 @@ var Base = function() {
   else
     log.warn('\t', 'Warning, trading method has no name');
 
-  if(!config.debug || !this.log)
-    this.log = function() {};
+//  if(!config.debug || !this.log)
+// DO NOT nuke the log for MACD logging, let line-by-line tweaks happen
+//    this.log = function() {};
 
   this.setup = true;
 }

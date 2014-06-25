@@ -1,5 +1,5 @@
-﻿// Everything is explained here:
-// https://github.com/askmike/gekko/blob/master/docs/Configuring_gekko.md
+// Everything is explained here:
+// https://github.com/kuzetsa/gekko/blob/master/docs/Configuring_gekko.md
 
 var config = {};
 
@@ -13,7 +13,7 @@ config.history = {
   // and load historical data from?
   directory: './history/'
 }
-config.debug = true; // for additional logging / debugging
+config.debug = false; // for additional logging / debugging
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                         WATCHING A MARKET
@@ -22,9 +22,9 @@ config.debug = true; // for additional logging / debugging
 // Monitor the live market
 config.watch = {
   enabled: true,
-  exchange: 'Bitstamp', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio' or 'kraken'
-  currency: 'USD',
-  asset: 'BTC'
+  exchange: 'cexio', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio' or 'kraken'
+  currency: 'BTC',
+  asset: 'GHS'
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,9 +33,9 @@ config.watch = {
 
 config.tradingAdvisor = {
   enabled: true,
-  method: 'DEMA',
-  candleSize: 60,
-  historySize: 50
+  method: 'MACD',
+  candleSize: 1,
+  historySize: 113
 }
 
 // Exponential Moving Averages settings:
@@ -56,13 +56,13 @@ config.DEMA = {
 config.MACD = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
-  short: 10,
-  long: 21,
-  signal: 9,
+  short: 53,
+  long: 109,
+  signal: 41,
   // the difference between the EMAs (to act as triggers)
   thresholds: {
-    down: -0.025,
-    up: 0.025,
+    down: -9999,
+    up: 0.00000001,
     // How many candle intervals should a trend persist
     // before we consider it real?
     persistence: 1
@@ -78,8 +78,8 @@ config.PPO = {
   signal: 9,
   // the difference between the EMAs (to act as triggers)
   thresholds: {
-    down: -0.025,
-    up: 0.025,
+    down: -9999,
+    up: 0.00000001,
     // How many candle intervals should a trend persist
     // before we consider it real?
     persistence: 2
@@ -112,9 +112,9 @@ config.custom = {
 // watched by config.watch
 config.trader = {
   enabled: false,
-  key: '',
-  secret: '',
-  username: '' // your username, only fill in when using bitstamp or cexio
+  key: 'see next line',
+  secret: 'some sort of hash goes here',
+  username: 'fakename change this', // your username, as required by cexio
 }
 
 config.adviceLogger = {
@@ -123,7 +123,7 @@ config.adviceLogger = {
 
 // do you want Gekko to calculate the profit of its own advice?
 config.profitSimulator = {
-  enabled: true,
+  enabled: false,
   // report the profit in the currency or the asset?
   reportInCurrency: true,
   // start balance, on what the current balance is compared with
@@ -133,11 +133,11 @@ config.profitSimulator = {
     currency: 100,
   },
   // only want report after a sell? set to `false`.
-  verbose: false,
+  verbose: true,
   // how much fee in % does each trade cost?
-  fee: 0.6,
+  fee: 1,
   // how much slippage should Gekko assume per trade?
-  slippage: 0.05
+  slippage: 0.5
 }
 
 // want Gekko to send a mail on buy or sell advice?
@@ -150,7 +150,7 @@ config.mailer = {
   // You don't have to set your password here, if you leave it blank we will ask it
   // when Gekko's starts.
   //
-  // NOTE: Gekko is an open source project < https://github.com/askmike/gekko >,
+  // NOTE: Gekko is an open source project < https://github.com/kuzetsa/gekko >,
   // make sure you looked at the code or trust the maintainer of this bot when you
   // fill in your email and password.
   //
@@ -209,7 +209,8 @@ config.redisBeacon = {
   ]
 }
 
-// not in a working state
+// the web interface not currently supported, maintainer of the plugin quit
+// (not in a working state)
 // read: https://github.com/askmike/gekko/issues/156
 config.webserver = {
   enabled: false,
@@ -238,7 +239,7 @@ config.backtest = {
 // it doesn't advice on itself, only set to true if you truly
 // understand this.
 // 
-// Not sure? Read this first: https://github.com/askmike/gekko/issues/201
-config['I understand that Gekko only automates MY OWN trading strategies'] = false;
+config['I understand that Gekko only automates MY OWN trading 
+strategies'] = false;
 
 module.exports = config;

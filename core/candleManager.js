@@ -591,7 +591,7 @@ Manager.prototype.processTrades = function(data) {
     return this.emit('processed');
   }
 
-  log.debug('processing', _.size(trades), 'trade(s)');
+  log.info('processing', _.size(trades), 'trade(s)');
   log.debug(
     'from',
     moment.unix(_.first(trades).date).utc().format(),

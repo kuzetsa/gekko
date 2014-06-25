@@ -9,9 +9,7 @@ You are looking at the brand new and completetly different version of Gekko. We'
 -Gordon Gekko
 
 Gekko is a cloud mining reinvestment platform which based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer)
-It is written in javascript and runs on [nodejs](http://nodejs.org). 
-
-This is the open source do-it-yourself version, we are planning on running hosted Gekkos in the cloud which does not require you to download and install anything, configure any textfiles or deal with the commandline. If you are looking for such a solution, sign up at [Wizbit](http://wizb.it) and we'll let you know once it's out!
+It is written in javascript and runs on [node.js](https://github.com/joyent/node). 
 
 *Use Gekko at you own risk.*
 
@@ -19,8 +17,7 @@ This is the open source do-it-yourself version, we are planning on running hoste
 
 Gekko comes with a few [technical analysis (TA)](http://en.wikipedia.org/wiki/Technical_analysis) methods which implement a single indicator (DEMA, MACD, RSI and PPO). The parameters of these indicators are all configurable and changing them changes the outcome drastically. Additionally Gekko also provides an easy way to write your own trading methods in javascript. Read more about that in the [documentation](https://github.com/kuzetsa/gekko/blob/master/docs/internals/trading_methods.md). 
 
-**Note:** *much of this information is outdated, and/or not relevant to 
-reinvestment-only mode.*
+**Note:** *much of this information is outdated, and/or not relevant to reinvestment-only mode.*
 
 ## Market interface
 
@@ -85,8 +82,7 @@ If you want to contribute or are interested in how Gekko works:
 - Read about [Gekko's overall architecture](https://github.com/kuzetsa/gekko/tree/master/docs/internals/architecture.md).
 - Read on how to add [a new exchange to Gekko](https://github.com/kuzetsa/gekko/tree/master/docs/internals/exchanges.md).
 - Read on how to [create your own plugin](https://github.com/kuzetsa/gekko/tree/master/docs/internals/plugins.md).
-- Implement [your own trading method](https://github.com/kuzetsa/gekko/blob/master/docs/internals/trading_methods.md) 
-and share it back.
+- Implement [your own trading method](https://github.com/kuzetsa/gekko/blob/master/docs/internals/trading_methods.md) and share it back.
 
 ## Credits
 
@@ -100,7 +96,7 @@ and share it back.
 The MIT License (MIT)
 
 Copyright (c) 2014 Mike van Rossum <mike@mvr.me> (original author, initial code in gekkobot)
-Copyright (c) 2013-2014 Sarah White (*AKA **kuzetsa**, forked 2014 June 25th*)
+Copyright (c) 2013-2014 Sarah White (*AKA* **kuzetsa**, *forked 2014 June 25th*)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

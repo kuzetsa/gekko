@@ -9,6 +9,7 @@ You are looking at the brand new and completetly different version of Gekko. We'
 -Gordon Gekko
 
 Gekko is a cloud mining reinvestment platform which based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer)
+
 It is written in javascript and runs on [node.js](https://github.com/joyent/node). 
 
 *Use Gekko at you own risk.*

@@ -239,7 +239,6 @@ config.backtest = {
 // it doesn't advice on itself, only set to true if you truly
 // understand this.
 // 
-config['I understand that Gekko only automates MY OWN trading 
-strategies'] = false;
+config['I understand that Gekko only automates MY OWN trading strategies'] = false;
 
 module.exports = config;

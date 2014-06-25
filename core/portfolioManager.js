@@ -221,9 +221,8 @@ Manager.prototype.buy = function(amount, price) {
   if(amount < minimum) {
     return log.info(
       'Ignore tiny',
-      'BUY order',
       '(' + amount.toFixed(8) + ' ' + this.asset + ')',
-
+      'BUY order',
       'at',
       this.exchange.name
     );

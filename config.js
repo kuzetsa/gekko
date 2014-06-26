@@ -33,9 +33,9 @@ config.watch = {
 
 config.tradingAdvisor = {
   enabled: true,
-  method: 'MACD',
+  method: 'x2MACD',
   candleSize: 1,
-  historySize: 113
+  historySize: 239
 }
 
 // Exponential Moving Averages settings:
@@ -63,9 +63,20 @@ config.MACD = {
   thresholds: {
     down: -9999,
     up: 0.00000001,
-    // How many candle intervals should a trend persist
-    // before we consider it real?
-    persistence: 1
+  }
+};
+
+// x2MACD settings:
+config.x2MACD = {
+  // EMA weight (α)
+  // the higher the weight, the more smooth (and delayed) the line
+  short: 53,
+  long: 109,
+  signal: 41,
+  // the difference between the EMAs (to act as triggers)
+  thresholds: {
+    down: -9999,
+    up: 0.00000001,
   }
 };
 
@@ -80,9 +91,6 @@ config.PPO = {
   thresholds: {
     down: -9999,
     up: 0.00000001,
-    // How many candle intervals should a trend persist
-    // before we consider it real?
-    persistence: 2
   }
 };
 

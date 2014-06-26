@@ -149,7 +149,7 @@ Trader.prototype.getTicker = function(callback) {
 Trader.prototype.getFee = function(callback) {
   // cexio does currently don't take a fee on trades
   // TODO: isn't there an API call for this?
-  callback(false, 0.0075);
+  callback(false, 0.002);
 }
 
 Trader.prototype.checkOrder = function(order, callback) {

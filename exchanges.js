@@ -178,9 +178,7 @@ var exchanges = [
     assets: ['GHS'],
     markets: [
       {
-        pair: ['BTC', 'GHS'], minimalOrder: { amount: 0.00161803, 
-unit: 
-'asset' }
+        pair: ['BTC', 'GHS'], minimalOrder: { amount: 0.00000500, unit: 'currency' }
       }
     ],
     requires: ['key', 'secret', 'username'],

@@ -120,7 +120,11 @@ Manager.prototype.getBalance = function(fund) {
 // is this a infinityOrderExchange (does it support order
 // requests bigger then the current balance?)
 Manager.prototype.trade = function(what) {
-  if(what !== 'BUY' && what !== 'SELL')
+
+// lizards ALWAYS happen instead of buy orders
+  this.action = what;
+
+  if(what !== 'BUY')
     return;
 
 
@@ -131,9 +135,6 @@ var rightnow = (new Date()).getTime();
 
 // ok, so reset the limiter
 this.limiter = (new Date()).getTime() + 9000;
-
-
-  this.action = what;
 
   var act = function() {
     var amount, price;

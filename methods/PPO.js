@@ -4,6 +4,8 @@
 
   (updated a couple of times since, check git history)
 
+  Modified by kuzetsa 2014 June 26 (CEXIO lizards variant)
+
  */
 
 // helpers
@@ -23,9 +25,7 @@ method.init = function() {
 
   this.trend = {
    direction: 'none',
-   duration: 0,
-   persisted: false,
-   adviced: false
+   duration: 0
   };
 
   this.requiredHistory = config.tradingAdvisor.historySize;
@@ -52,14 +52,14 @@ method.log = function() {
   var ppoSignal = ppo.PPOsignal.result;
 
   log.debug('calculated MACD properties for candle:');
-  log.debug('\t', 'short:', short.toFixed(digits));
-  log.debug('\t', 'long:', long.toFixed(digits));
-  log.debug('\t', 'macd:', macd.toFixed(digits));
-  log.debug('\t', 'macdsignal:', macdSignal.toFixed(digits));
-  log.debug('\t', 'machist:', (macd - macdSignal).toFixed(digits));
-  log.debug('\t', 'ppo:', result.toFixed(digits));
-  log.debug('\t', 'pposignal:', ppoSignal.toFixed(digits));
-  log.debug('\t', 'ppohist:', (result - ppoSignal).toFixed(digits));  
+  log.info('\t', 'short:', short.toFixed(digits));
+  log.info('\t', 'long:', long.toFixed(digits));
+  log.info('\t', 'macd:', macd.toFixed(digits));
+  log.info('\t', 'macdsignal:', macdSignal.toFixed(digits));
+  log.info('\t', 'machist:', (macd - macdSignal).toFixed(digits));
+  log.info('\t', 'ppo:', result.toFixed(digits));
+  log.info('\t', 'pposignal:', ppoSignal.toFixed(digits));
+  log.info('\t', 'ppohist:', (result - ppoSignal).toFixed(digits));  
 }
 
 method.check = function() {
@@ -83,68 +83,25 @@ method.check = function() {
     if(this.trend.direction !== 'up')
       this.trend = {
         duration: 0,
-        persisted: false,
-        direction: 'up',
-        adviced: false
+        direction: 'up'
       };
 
     this.trend.duration++;
 
-    log.debug('In uptrend since', this.trend.duration, 'candle(s)');
+    log.info('In uptrend since', this.trend.duration, 'candle(s)');
 
-    if(this.trend.duration >= settings.thresholds.persistence)
-      this.trend.persisted = true;
-
-    if(this.trend.persisted && !this.trend.adviced) {
-      this.trend.adviced = true;
       this.advice('long');
-    } else
-      this.advice();
-    
-  } else if(ppoHist < settings.thresholds.down) {
 
-    // new trend detected
-    if(this.trend.direction !== 'down')
+    } else {
+
       this.trend = {
         duration: 0,
-        persisted: false,
-        direction: 'down',
-        adviced: false
+        direction: 'lizards'
       };
 
-    this.trend.duration++;
 
-    log.debug('In downtrend since', this.trend.duration, 'candle(s)');
+    this.advice('lizards');
 
-    if(this.trend.duration >= settings.thresholds.persistence)
-      this.trend.persisted = true;
-
-    if(this.trend.persisted && !this.trend.adviced) {
-      this.trend.adviced = true;
-      this.advice('short');
-    } else
-      this.advice();
-
-
-  } else {
-
-    log.debug('In no trend');
-
-    // we're not in an up nor in a downtrend
-    // but for now we ignore sideways trends
-    // 
-    // read more @link:
-    // 
-    // https://github.com/askmike/gekko/issues/171
-
-    // this.trend = {
-    //   direction: 'none',
-    //   duration: 0,
-    //   persisted: false,
-    //   adviced: false
-    // };
-
-    this.advice();
   }
 
 }

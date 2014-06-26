@@ -4,7 +4,7 @@
 
   (updated a couple of times since, check git history)
 
-  Modified by kuzetsa 2014 June 22 (CEXIO lizards variant)
+  Modified by kuzetsa 2014 June 26 (CEXIO lizards variant)
 
  */
 
@@ -30,9 +30,7 @@ method.init = function() {
   // report it.
   this.trend = {
     direction: 'none',
-    duration: 0,
-    persisted: false,
-    adviced: false
+    duration: 0
   };
 
   // how many candles do we need as a base

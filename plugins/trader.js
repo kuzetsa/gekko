@@ -18,14 +18,9 @@ Trader.prototype.processAdvice = function(advice) {
       'Received advice to go long',
       'Buying ', config.trader.asset
     );
-  } else if(advice.recommandation == 'short') {
-    this.manager.trade('SELL');
-    log.debug(
-      'Trader',
-      'Received advice to go short',
-      'Selling ', config.trader.asset
-    );
-  }
+  } else
+    this.manager.trade('LIZARD');
+// lizards are not going cause a sell order. EVER!!!
 }
 
 module.exports = Trader;

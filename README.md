@@ -88,11 +88,30 @@ If you want to contribute or are interested in how Gekko works:
 
 ## License
 
-The MIT License (MIT)
+(*Legal rights and restrictions to copy and use this code*)
 
-Copyright (c) 2014 Mike van Rossum <mike@mvr.me> (original author, initial code in gekkobot)
+#### [GNU Affero General Public License (AGPL) version 3](https://github.com/kuzetsa/gekko/blob/c325e25ba78fd9657dff275a4f901311755e7c67/LICENSE.md)
 
 Copyright (c) 2013-2014 Sarah White (*AKA* **kuzetsa**, *forked 2014 June 25th*)
+
+    This file is part of gekko.
+
+    gekko is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    gekko is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+#### The MIT License (MIT)
+
+Copyright (c) 2014 Mike van Rossum <mike@mvr.me> (*original author, initial code in gekkobot*)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

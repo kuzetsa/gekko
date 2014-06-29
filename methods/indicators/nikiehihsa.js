@@ -38,18 +38,18 @@ Indicator.prototype.update = function(candle) {
 
 Indicator.prototype.calculateEMAdiff = function() {
 
-  var Sc = pow(this.shortC.result, 3);
-  var Lc = pow(this.longC.result, 3);
+  var Sc = Math.pow(this.shortC.result, 3);
+  var Lc = Math.pow(this.longC.result, 3);
   var So = this.shortO.result;
   var Lo = this.longO.result;
-  var Sh = pow(this.shortH.result, 2);
-  var Lh = pow(this.longH.result, 2);
-  var Sl = pow(this.shortL.result, 2);
-  var Ll = pow(this.longL.result, 2);
+  var Sh = Math.pow(this.shortH.result, 2);
+  var Lh = Math.pow(this.longH.result, 2);
+  var Sl = Math.pow(this.shortL.result, 2);
+  var Ll = Math.pow(this.longL.result, 2);
   var eightroot = 1 / 8;
 
-  var short = pow((Sc * So * Sh * Sl), eightroot);
-  var long = pow((Lc * Lo * Lh * Ll), eightroot);
+  var short = Math.pow((Sc * So * Sh * Sl), eightroot);
+  var long = Math.pow((Lc * Lo * Lh * Ll), eightroot);
 
   this.diff = short - long;
 }

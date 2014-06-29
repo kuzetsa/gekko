@@ -40,7 +40,7 @@ method.log = function() {
   log.info('\t', '[shortEMA]CLOSE:', nikiehihsa.shortC.result.toFixed(digits));
   log.info('\t', '[longEMA]CLOSE:', nikiehihsa.longC.result.toFixed(digits));
   log.info('\t', 'macd:', nikiehihsa.diff.toFixed(digits));
-  log.info('\t', 'signal:', nikiehihsa.signal.toFixed(digits));
+  log.info('\t', 'signal:', nikiehihsa.signal.result.toFixed(digits));
   log.info('\t', 'macdiff:', nikiehihsa.result.toFixed(digits));  
 }
 

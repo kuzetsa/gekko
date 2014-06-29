@@ -2,8 +2,6 @@
 // NOT QUITE based on xClose average
 // ...weighted geometric mean instead
 
-Indicator.prototype.update = function(candle) {
-
 var EMA = require('./EMA.js');
 
 var Indicator = function(config) {

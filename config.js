@@ -33,7 +33,7 @@ config.watch = {
 
 config.tradingAdvisor = {
   enabled: true,
-  method: 'x2MACD',
+  method: 'nikiehihsa',
   candleSize: 1,
   historySize: 239
 }
@@ -68,6 +68,20 @@ config.MACD = {
 
 // x2MACD settings:
 config.x2MACD = {
+  // EMA weight (α)
+  // the higher the weight, the more smooth (and delayed) the line
+  short: 53,
+  long: 109,
+  signal: 41,
+  // the difference between the EMAs (to act as triggers)
+  thresholds: {
+    down: -9999,
+    up: 0.00000001,
+  }
+};
+
+// nikiehihsa settings:
+config.nikiehihsa = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
   short: 53,

@@ -7,6 +7,7 @@ var config = util.getConfig();
 var methods = [
   'MACD',
   'x2MACD',
+  'nikiehihsa',
   'DEMA',
   'PPO',
   'RSI',

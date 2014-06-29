@@ -6,6 +6,10 @@ var log = require('../core/log.js');
 var indicatorsPath = '../methods/indicators/';
 
 var Indicators = {
+  nikiehihsa: {
+    factory: require(indicatorsPath + 'nikiehihsa'),
+    input: 'candle'
+  },
   x2MACD: {
     factory: require(indicatorsPath + 'x2MACD'),
     input: 'price'

@@ -1,0 +1,3 @@
+#!/bin/bash
+# kuzetsa's gekko lizard wrapper
+./launcher | tee -i lizard.log

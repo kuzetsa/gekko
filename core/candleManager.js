@@ -94,15 +94,17 @@ var Manager = function() {
   // 'realtime updating'
 
   // make sure the historical folder exists
-  if(!fs.existsSync(this.historyPath))
+  if(!fs.existsSync(this.historyPath)) {
     fs.mkdirSync(this.historyPath);
-
-  if(!fs.existsSync(this.historyPath))
+  }
+  
+  if(!fs.existsSync(this.historyPath)) {
     throw 'Gekko is unable to save historical data, do I have sufficient rights?';
+  }
 
   this.on('processed', function() {
     log.debug('Processed trades, sleeping for', this.fetch.next.m.fromNow(true) + '...');
-  })
+  });
     // .on('full history build', this.emitRealtime)
 };
 
@@ -114,31 +116,39 @@ Util.inherits(Manager, EventEmitter);
 Manager.prototype.requiredDays = function(timespan, from) {
   var days = [];
 
-  if(!from)
-    var start = this.current.day.clone();
-  else
-    var start = from.clone();
+// variable declaration style cleanup
+// to make sure we pass jslint / jshint
+  
+  var start = {};
+  
+  if(!from) {
+    start = this.current.day.clone();
+  } else {
+    start = from.clone();
+  }
+
   var to = start.clone().subtract('m', timespan).startOf('day');
 
   while(start >= to) {
     days.push(this.mom(start.clone()));
     start.subtract('d', 1);
-  };
+  }
 
   return days;
-}
+};
 
 
 Manager.prototype.checkHistory = function() {
   log.debug('checking history');
-  this.history = {}
+  this.history = {};
 
   this.history.required = tradingAdvisor.enabled;
-  if(this.history.required)
+  if(this.history.required) {
     this.history.timespan = tradingAdvisor.candleSize * tradingAdvisor.historySize;
-  else
+  } else {
     // load a only the current day
     this.history.timespan = 0;
+  }
 
   this.history.days = this.requiredDays(this.history.timespan);
   // load them
@@ -153,13 +163,14 @@ Manager.prototype.checkHistory = function() {
       this.processHistoryStats();
     }, this)
   );
-}
+};
 
 // create a new daily database and load it
 Manager.prototype.createDatabase = function(mom) {
-  if(mom.dayString in this.days && this.days[mom.dayString].handle)
+  if(mom.dayString in this.days && this.days[mom.dayString].handle) {
     return log.debug('Skipping creation of already loaded database', mom.dayString);
-
+  }
+ 
   var filename = this.databaseName(mom);
 
   if(this.databaseExists(filename)) {
@@ -189,12 +200,13 @@ Manager.prototype.createDatabase = function(mom) {
   day.handle.ensureIndex({fieldName: 's', unique: true});
 
   this.days[day.string] = day;
-}
+};
 
 // load a daily database and store it in this.days
 Manager.prototype.loadDatabase = function(mom) {
-  if(mom.dayString in this.days && this.days[mom.dayString].mounted)
+  if(mom.dayString in this.days && this.days[mom.dayString].mounted) {
     return log.debug('Skipping loading', mom.dayString, ', it already exists');
+  }
 
   var filename = this.databaseName(mom);
 
@@ -217,8 +229,9 @@ Manager.prototype.loadDatabase = function(mom) {
 
   this.days[day.string] = day;
 
-  if(!this.databaseExists(day))
+  if(!this.databaseExists(day)) {
     return;
+  }
 
   day.mounted = true;
   day.exists = true;
@@ -230,36 +243,41 @@ Manager.prototype.loadDatabase = function(mom) {
   } catch(e) {
     util.die('Database file ' + filename + ' is corrupt, delete or rename that file and try again.');
   }
-}
+};
 
 Manager.prototype.databaseExists = function(day) {
-  if(_.isString(day))
+  if(_.isString(day)) {
     // we have a filename instead
     day = {filename: day};
+  }
 
-  if(!day.filename)
+  if(!day.filename) {
     // we have a mom instead
     day.filename = this.databaseName(day);
+  }
 
   return fs.existsSync(day.filename);
-}
+};
 
 // calculate stats of a daily database and store state
 // in this.days
 Manager.prototype.setDatabaseMeta = function(mom, cb) {
   var day = this.days[mom.dayString];
 
-  if(!day.exists)
+  if(!day.exists) {
     return cb();
+  }
 
   day.handle.find({s: {$gt: -1}}, _.bind(function(err, minutes) {
-    if(err)
+    if(err) {
       return cb(err);
+    }
 
     day.minutes = _.size(minutes);
 
-    if(!day.minutes)
+    if(!day.minutes) {
       return cb();
+    }
 
     // this day has candles, store stats
     day.empty = false;
@@ -272,7 +290,7 @@ Manager.prototype.setDatabaseMeta = function(mom, cb) {
     cb();
   }, this));
 
-}
+};
 
 Manager.prototype.deleteDay = function(day, safe) {
   log.debug(
@@ -280,17 +298,20 @@ Manager.prototype.deleteDay = function(day, safe) {
     day.string,
     'as corrupt'
   );
-  if(safe)
+
+  if(safe) {
     fs.renameSync(
       day.filename,
       day.filename.replace('.db', '') + ' [incomplete ~ ' + (+moment()) + '].db'
     );
-  else
+  } else {
     fs.unlinkSync(day.filename);
+  }
 
-  if(day.string in this.days)
+  if(day.string in this.days) {
     delete this.days[day.string];
-}
+  }
+};
 
 // loop through this.days and check every meta to
 // see what history we have available
@@ -310,40 +331,53 @@ Manager.prototype.checkDaysMeta = function(err, results) {
 
     var isFirstDay = equals(this.current.day, day.time);
 
-    if(!day.exists)
+    if(!day.exists) {
       return false;
-    if(day.empty)
-      return this.deleteDay(day);
-    if(!day.minutes)
-      return false;
+    }
 
-    if(!isFirstDay && day.endCandle.s !== MINUTES_IN_DAY)
+    if(day.empty) {
+      return this.deleteDay(day);
+    }
+
+    if(!day.minutes) {
+      return false;
+    }
+
+    if(!isFirstDay && day.endCandle.s !== MINUTES_IN_DAY) {
       // this day doesn't end at midnight
       return false;
-
+    }
+    
     // we have content
     available.minutes += day.minutes;
     available.first = this.mom(day.start);
 
-    if(isFirstDay)
+    if(isFirstDay) {
       available.last = this.mom(day.end);
+    }
 
     // if current day it needs to go back to
     // midnight if we want to consider next day
-    if(isFirstDay && day.startCandle.s !== 0)
+    if(isFirstDay && day.startCandle.s !== 0) {
       return false;
+    }
 
     // if not current day, it needs to be full
-    if(!isFirstDay && !day.full)
+    if(!isFirstDay && !day.full) {
       return false;
+    }
 
     // this day is approved, up to next day
     return true;
+    
+    // this inline callback function was a mess
+    // but at least now passes jslint / jshint
+    // -- kuzetsa, 2014 June 29
 
   }, this);
 
   this.history.available = available;
-}
+};
 
 
 
@@ -370,7 +404,11 @@ Manager.prototype.processHistoryStats = function() {
   // how many more minutes do we need?
   history.toFetch = history.timespan - history.available.minutes;
 
-  if(!history.toFetch < 1) {
+  // (!A < B) is confusing
+  // (A >= B) is easier to read
+  // and actually passes jshint / jslint
+  //-- kuzetsa, 2014 June 29
+  if(history.toFetch >= 1) {
     // we have appear to have full history
     // though we need to verify on fetch
     // that we don't have a gap
@@ -388,14 +426,15 @@ Manager.prototype.processHistoryStats = function() {
     completeAt: done
   };
 
-  if(!history.available.minutes)
+  if(!history.available.minutes) {
     state.empty = true;
+  }
 
   this.history.missing = history.toFetch;
 
   state = _.extend(state, history.available);
   this.emit('history state', state);
-}
+};
 
 
 Manager.prototype.setFetchMeta = function(data) {
@@ -404,7 +443,7 @@ Manager.prototype.setFetchMeta = function(data) {
     end: this.mom(data.end),
     next: this.mom(utc().add('ms', data.nextIn))
   };
-}
+};
 
 
 // we need to verify after the first fetch
@@ -424,14 +463,16 @@ Manager.prototype.checkHistoryAge = function(data) {
     return;
   }
 
-  if(history.available.last.minute === MINUTES_IN_DAY)
+  if(history.available.last.minute === MINUTES_IN_DAY) {
     this.increaseDay();
+  }
 
   this.minumum = history.available.last.m.clone().add('m', 1);
 
-  if(this.minumum > this.fetch.start.m)
+  if(this.minumum > this.fetch.start.m) {
     // we're all good, process normally
     return;
+  }
 
   // there is a gap, mark current day as corrupted and process
   log.warn('The history we found is to old, we have to build a new one');
@@ -440,26 +481,32 @@ Manager.prototype.checkHistoryAge = function(data) {
 
   // reset available history
   history.available.gap = true;
-  history.available.minutes = 0
+  history.available.minutes = 0;
   history.available.first = false;
   history.toFetch = history.timespan;
-}
+};
 
 
 // Calculate when we have enough historical data
 // to provide normal advice
 Manager.prototype.calculateAdviceTime = function(next, args) {
-  if(this.state !== 'building history')
+  if(this.state !== 'building history') {
     // we are not building history, either
     // we don't need to or we're already done
     return next(args);
+  }
 
   var history = this.history;
   var toFetch = history.toFetch;
 
-  if(toFetch < 0)
+  // this notation seems confusing
+  // what does "less than zero"
+  // even mean in this context?
+  //-- kuzetsa, 2014 June 29
+  if(toFetch < 0) {
     // we have full history
     return this.broadcastHistory(next, args);
+  }
 
   var doneAt = this.startTime.clone().add('m', toFetch + 1).startOf('minute').local();
   // we have partly history
@@ -474,19 +521,24 @@ Manager.prototype.calculateAdviceTime = function(next, args) {
   );
 
   next(args);
-}
+};
 
 // broadcast full history
 Manager.prototype.broadcastHistory = function(next, args) {
   var history = this.history;
 
-  if(history.available.last)
+  //variable declaration style cleanup
+  //to make sure we pass jslint / jshint
+  var last = {};
+  var m = {};
+
+  if(history.available.last) {
     // first run
-    var last = this.mom(history.available.last.m);
-  else {
+    last = this.mom(history.available.last.m);
+  } else {
     // after filling full history while fetching live
-    var m = this.minuteToMoment(this.mostRecentCandle.s, this.current.day)
-    var last = this.mom(m);
+    m = this.minuteToMoment(this.mostRecentCandle.s, this.current.day);
+    last = this.mom(m);
   }
 
   var first = this.mom(last.m.clone().subtract('m', history.timespan));
@@ -505,21 +557,24 @@ Manager.prototype.broadcastHistory = function(next, args) {
     var from = 0;
     var to = MINUTES_IN_DAY;
 
-    if(equals(mom.day, last.day))
+    if(equals(mom.day, last.day)) {
       // on first (most recent) day
       to = last.minute;
+    }
 
-    if(equals(mom.day, first.day))
+    if(equals(mom.day, first.day)) {
       // on last (oldest) day
       from = first.minute;
+    }
 
     this.getCandles(mom, from, to, next);
-  }
+  };
 
   // emit all candles together
   var emit = function(err, batches) {
-    if(err || !batches)
+    if(err || !batches) {
       throw err;
+    }
 
     // transport
     batches = _.map(batches, function(batch, i) {
@@ -539,14 +594,14 @@ Manager.prototype.broadcastHistory = function(next, args) {
     });
 
     next(args);
-  }
+  };
 
   async.map(
     days,
     _.bind(iterator, this),
     _.bind(emit, this)
   );
-}
+};
 
 // grab candles in a specific day
 //
@@ -563,7 +618,7 @@ Manager.prototype.getCandles = function(mom, from, to, cb) {
       $gte: from
     }
   }, cb);
-}
+};
 
 // grab a batch of trades and for each full minute
 // create a new candle
@@ -571,8 +626,9 @@ Manager.prototype.processTrades = function(data) {
 
   this.setFetchMeta(data);
 
-  if(this.fetch.start.day > this.current.day)
+  if(this.fetch.start.day > this.current.day) {
     util.die('FATAL: Fetch data appears from the future, don\'t know how to process');
+  }
 
   // if first run
   if(!this.minumum) {
@@ -584,6 +640,7 @@ Manager.prototype.processTrades = function(data) {
     this.calculateAdviceTime(this.processTrades, data);
     return;
   }
+
   var trades = this.filterTrades(data.all);
 
   if(!_.size(trades)) {
@@ -601,12 +658,19 @@ Manager.prototype.processTrades = function(data) {
 
   var candles = this.calculateCandles(trades);
 
+  // variable declaration style cleanup
+  // to make sure we pass jslint / jshint
+  var ghostCandle = {};
+  var batch = {};
+  var batches = [];
+
   if(this.fetchHasNewDay()) {
     // multple days
-    var batches = this.splitCandleDays(candles);
+    batches = this.splitCandleDays(candles);
 
-    if(_.size(batches) > 2)
+    if(_.size(batches) > 2) {
       util.error('More than 2 days of new data per fetch not supported');
+    }
 
     // we are dealing with two days
     log.debug('fetch spans midnight');
@@ -618,7 +682,7 @@ Manager.prototype.processTrades = function(data) {
 
     // we have to create a fake candle so we can fill gap
     // after midnight with empty candles reflecting last price
-    var ghostCandle = _.clone(_.last(batches[0]));
+    ghostCandle = _.clone(_.last(batches[0]));
     ghostCandle.s = -1;
     batches[1] = this.addEmtpyCandles(_.last(batches), ghostCandle);
 
@@ -632,37 +696,44 @@ Manager.prototype.processTrades = function(data) {
 
     // but if the most recent candle is from yesterday ...
     if(this.mostRecentCandle && this.mostRecentCandle.s === MINUTES_IN_DAY) {
-      var ghostCandle = _.clone(this.mostRecentCandle);
+      ghostCandle = _.clone(this.mostRecentCandle);
       ghostCandle.s = -1;
-      var batch = this.addEmtpyCandles(candles, ghostCandle);
-    } else
-      var batch = this.addEmtpyCandles(candles, this.mostRecentCandle);
+      batch = this.addEmtpyCandles(candles, ghostCandle);
+    } else {
+      batch = this.addEmtpyCandles(candles, this.mostRecentCandle);
+    }
 
     this.leftovers = batch.pop();
 
-    var batches = [ batch ];
-  };
+    batches = [ batch ];
+  }
 
   // set threshold for next fetch
   this.minumum = this.fetch.end.m.clone();
 
   // if we only have leftovers we can skip insert clause
-  if(_.size(batches) === 1 && _.size(_.first(batches)) === 0)
+  if(_.size(batches) === 1 && _.size(_.first(batches)) === 0) {
     return this.finishInsert();
-
+  }
   // now we have candles in batches per day, insert and process result
   async.eachSeries(batches, this.insertCandles, this.finishInsert);
-}
+};
 
 
 // filter out all trades that are do not belong to the last candle
 Manager.prototype.filterTrades = function(trades) {
   log.debug('minimum trade treshold:', this.minumum.utc().format('YYYY-MM-DD HH:mm:ss'), 'UTC');
 
-  return trades = _.filter(trades, function(trade) {
+  trades = _.filter(trades, function(trade) {
     return this.minumum < moment.unix(trade.date).utc();
   }, this);
-}
+
+  // it is unlear what (when / how) we
+  // return due to the async callback
+  //-- kuzetsa, 2014 June 29
+  
+  return trades;
+};
 
 // turn a batch of trades into 1m candles. Is sorted as
 // long as the batch of trades are.
@@ -722,7 +793,7 @@ Manager.prototype.calculateCandles = function(trades) {
   });
 
   return candles;
-}
+};
 
 // split a batch of candles into seperate arrays per day
 Manager.prototype.splitCandleDays = function(candles) {
@@ -730,8 +801,9 @@ Manager.prototype.splitCandleDays = function(candles) {
   var last = 0;
 
   _.each(candles, function(c) {
-    if(c.s < last)
+    if(c.s < last) {
       batches.push([]);
+    }
 
     last = c.s;
 
@@ -739,7 +811,7 @@ Manager.prototype.splitCandleDays = function(candles) {
   }, this);
 
   return batches;
-}
+};
 
 
 
@@ -761,8 +833,9 @@ Manager.prototype.splitCandleDays = function(candles) {
 //     [midnight up to][batch without gaps][up to next midnight - 1]
 Manager.prototype.addEmtpyCandles = function(candles, start, end) {
   var length = _.size(candles);
-  if(!length)
+  if(!length) {
     return candles;
+  }
 
   if(start) {
     // put the start candle in front
@@ -779,17 +852,24 @@ Manager.prototype.addEmtpyCandles = function(candles, start, end) {
     // if this was last and we don't
     // have to fill a gap after this batch
     // we're done
-    if(i === last && !end)
+    if(i === last && !end) {
       return;
+    }
 
     var min = c.s + 1;
 
-    if(i === last && end)
-      var max = end + 1;
-    else
-      var max = candles[i + 1].s;
+    //variable declaration style cleanup
+    //to make sure we pass jslint / jshint
+    var max = 0;
 
-    var empty, prevClose;
+    if(i === last && end) {
+      max = end + 1;
+    } else {
+      max = candles[i + 1].s;
+    }
+
+    var empty = {};
+    var prevClose = 0;
 
     if(min > max) {
       console.log('c', candles, 's', start, 'e', end);
@@ -801,7 +881,7 @@ Manager.prototype.addEmtpyCandles = function(candles, start, end) {
       empty.s = min;
       empty.v = 0;
 
-      var prevClose = empty.c;
+      prevClose = empty.c;
       // set o, h, l, p to previous
       // close price
       empty.o = prevClose;
@@ -816,21 +896,23 @@ Manager.prototype.addEmtpyCandles = function(candles, start, end) {
 
   // we added start to fill the gap from before
   // previous candles to this batch
-  if(start)
+  if(start) {
     candles.shift();
+  }
 
   var all = candles.concat(emptyCandles);
 
   return this.sortCandles(all);
-}
+};
 
 
 // store a batch of candles under the day specified by
 // `this.current`. If cb is specified runs this after
 // inserting all candles (inserts 1 per tick).
 Manager.prototype.insertCandles = function(candles, cb) {
-  if(!_.size(candles))
+  if(!_.size(candles)) {
     return cb();
+  }
 
   // because this function is async make
   // sure we are using the right day.
@@ -845,7 +927,7 @@ Manager.prototype.insertCandles = function(candles, cb) {
   var iterator = function(c, next) {
     // async func wrapper to not pass error
     // and halt the async chain
-    var _next = function() { next() };
+    var _next = function() { next(); };
 
     this.defer(function() {
       log.debug(
@@ -873,15 +955,16 @@ Manager.prototype.insertCandles = function(candles, cb) {
 
       next();
     });
-  }
+  };
 
   var done = function() {
-    if(this.processMidnight)
+    if(this.processMidnight) {
       this.increaseDay();
+    }
 
     this.processMidnight = false;
     cb();
-  }
+  };
 
   this.mostRecentCandle = _.last(candles);
 
@@ -905,17 +988,18 @@ Manager.prototype.insertCandles = function(candles, cb) {
     );
 
   }, this));
-}
+};
 
 // unmount a day from memory and mark the cache
 // ready for GC
 Manager.prototype.unloadDay = function(dayString) {
-  if(!this.days[dayString])
+  if(!this.days[dayString]) {
     return;
+    }
 
   this.days[dayString].mounted = false;
   this.days[dayString].handle = false;
-}
+};
 
 Manager.prototype.increaseDay = function() {
   log.debug('shifting past midnight');
@@ -924,31 +1008,33 @@ Manager.prototype.increaseDay = function() {
   this.unloadDay(this.current.dayString);
 
   this.setDay(this.current.day.clone().add('d', 1));
-}
+};
 
 Manager.prototype.finishInsert = function(err, results) {
   this.emit('processed');
-}
+};
 
 // // HELPERS
 Manager.prototype.setDay = function(m) {
   this.current = this.mom(m.clone());
-}
+};
 
 // how many days are in this trade batch?
 Manager.prototype.fetchHasNewDay = function() {
   return !equals(this.fetch.end.day, this.current.day);
-}
+};
 
 Manager.prototype.sortCandles = function(candles) {
  return candles.sort(function(a, b) {
    return a.s - b.s;
   });
-}
+};
 
 Manager.prototype.minuteToMoment = function(minutes, day) {
-  if(!day)
+  if(!day) {
     day = this.current.day;
+  }
+
   day = day.clone().startOf('day');
   return day.clone().add('minutes', minutes);
 };
@@ -966,12 +1052,13 @@ Manager.prototype.mom = function(m) {
     minute: this.momentToMinute(m),
     day: m.clone().startOf('day'),
     dayString: m.format('YYYY-MM-DD')
-  }
-}
+  };
+};
 
 Manager.prototype.databaseName = function(mom) {
-  if(!('dayString' in mom))
+  if(!('dayString' in mom)) {
     mom = this.mom(mom);
+  }
 
   return this.historyPath + [
     config.watch.exchange,
@@ -979,14 +1066,15 @@ Manager.prototype.databaseName = function(mom) {
     config.watch.asset,
     mom.dayString + '.db'
   ].join('-');
-}
+};
 
 // small wrapper around a fake candle
 // to make it easier to throw them around
 Manager.prototype.transportCandle = function(c, day) {
   // check whether we got a mom or a moment
-  if(!day.m)
+  if(!day.m) {
     day = this.mom(day.clone());
+  }
 
   delete c._id;
 
@@ -994,18 +1082,19 @@ Manager.prototype.transportCandle = function(c, day) {
     candle: c,
     time: day.m.clone().add('m', c.s),
     day: day
-  }
-}
+  };
+};
+
 Manager.prototype.transportCandles = function(candles, day) {
   return _.map(candles, function(c) {
     return this.transportCandle(c, day);
   }, this);
-}
+};
 
 // executes cb on next tick while
 // maintaining context (to `Manager`).
 Manager.prototype.defer = function(cb) {
   return _.defer(_.bind(cb, this));
-}
+};
 
 module.exports = Manager;

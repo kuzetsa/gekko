@@ -12,7 +12,8 @@ config.history = {
   // in what directory should Gekko store
   // and load historical data from?
   directory: './history/'
-}
+};
+
 config.debug = false; // for additional logging / debugging
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,7 +26,7 @@ config.watch = {
   exchange: 'cexio', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio' or 'kraken'
   currency: 'BTC',
   asset: 'GHS'
-}
+};
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                       CONFIGURING TRADING ADVICE
@@ -33,10 +34,10 @@ config.watch = {
 
 config.tradingAdvisor = {
   enabled: true,
-  method: 'nikiehihsa',
+  method: 'x3nikiehihsa',
   candleSize: 1,
-  historySize: 239
-}
+  historySize: 887
+};
 
 // Exponential Moving Averages settings:
 config.DEMA = {
@@ -82,6 +83,20 @@ config.x2MACD = {
 
 // nikiehihsa settings:
 config.nikiehihsa = {
+  // EMA weight (α)
+  // the higher the weight, the more smooth (and delayed) the line
+  short: 53,
+  long: 109,
+  signal: 41,
+  // the difference between the EMAs (to act as triggers)
+  thresholds: {
+    down: -9999,
+    up: 0.00000001,
+  }
+};
+
+// x3nikiehihsa settings:
+config.x3nikiehihsa = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
   short: 53,

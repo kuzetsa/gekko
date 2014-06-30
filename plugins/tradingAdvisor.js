@@ -8,6 +8,7 @@ var methods = [
   'MACD',
   'x2MACD',
   'nikiehihsa',
+  'x3nikiehihsa',
   'DEMA',
   'PPO',
   'RSI',
@@ -19,8 +20,9 @@ var Actor = function() {
 
   var methodName = config.tradingAdvisor.method;
 
-  if(!_.contains(methods, methodName))
+  if(!_.contains(methods, methodName)) {
     util.die('Gekko doesn\'t know the method ' + methodName);
+  }
 
   var Consultant = require('../core/baseTradingMethod');
 
@@ -32,11 +34,11 @@ var Actor = function() {
     Consultant.prototype[name] = fn;
   });
 
-  this.method = new Consultant;
-}
+  this.method = new Consultant();
+};
 
 Actor.prototype.processCandle = function(candle) {
   this.method.tick(candle);
-}
+};
 
 module.exports = Actor;

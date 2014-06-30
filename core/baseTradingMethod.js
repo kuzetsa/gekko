@@ -6,9 +6,13 @@ var log = require('../core/log.js');
 var indicatorsPath = '../methods/indicators/';
 
 var Indicators = {
-  nikiehihsa: {
-    factory: require(indicatorsPath + 'nikiehihsa'),
+  x3nikiehihsa: {
+    factory: require(indicatorsPath + 'x3nikiehihsa'),
     input: 'candle'
+  },
+  nikiehihsa: {
+	factory: require(indicatorsPath + 'nikiehihsa'),
+	input: 'candle'
   },
   x2MACD: {
     factory: require(indicatorsPath + 'x2MACD'),
@@ -48,12 +52,14 @@ var Base = function() {
 
   // make sure we have all methods
   _.each(['init', 'check'], function(fn) {
-    if(!this[fn])
-      util.die('No ' + fn + ' function in this trading method found.')
+    if(!this[fn]) {
+      util.die('No ' + fn + ' function in this trading method found.');
+    }
   }, this);
 
-  if(!this.update)
+  if(!this.update) {
     this.update = function() {};
+  }
 
   // let's run the implemented starting point
   this.init();
@@ -61,17 +67,18 @@ var Base = function() {
   // should be set up now, check some things
   // to make sure everything is implemented
   // correctly.
-  if(this.name)
+  if(this.name) {
     log.info('\t', 'Using trading method:', this.name);
-  else
+  } else {
     log.warn('\t', 'Warning, trading method has no name');
+  }
 
 //  if(!config.debug || !this.log)
 // DO NOT nuke the log for MACD logging, let line-by-line tweaks happen
 //    this.log = function() {};
 
   this.setup = true;
-}
+};
 
 // teach our base trading method events
 var Util = require('util');
@@ -84,10 +91,13 @@ Base.prototype.tick = function(candle) {
   // update all indicators
   var price = candle[this.priceValue];
   _.each(this.indicators, function(i) {
-    if(i.input === 'price')
+    if(i.input === 'price') {
       i.update(price);
-    if(i.input === 'candle')
+    }
+
+    if(i.input === 'candle') {
       i.update(candle);
+    }
   });
 
   this.update(candle);
@@ -99,29 +109,32 @@ Base.prototype.tick = function(candle) {
 
   // update previous price
   this.lastPrice = price;
-}
+};
 
 Base.prototype.addIndicator = function(name, type, parameters) {
-  if(!_.contains(allowedIndicators, type))
+  if(!_.contains(allowedIndicators, type)) {
     util.die('I do not know the indicator ' + type);
+  }
 
-  if(this.setup)
+  if(this.setup) {
     util.die('Can only add indicators in the init method!');
+  }
 
   this.indicators[name] = new Indicators[type].factory(parameters);
 
   // some indicators need a price stream, others need full candles
   this.indicators[name].input = Indicators[type].input;
-} 
+};
 
 Base.prototype.advice = function(newPosition) {
-  if(!newPosition)
+  if(!newPosition) {
     return this.emit('soft advice');
+  }
 
   this.emit('advice', {
     recommandation: newPosition,
     portfolio: 1
   });
-}
+};
 
 module.exports = Base;

@@ -3,7 +3,7 @@ var log = require('../core/log.js');
 
 // configuration
 var config = require('../core/util.js').getConfig();
-var settings = config.zero;
+var settings = config.ZERO;
 
 // ZERO-lag MACD variant by kuzetsa, 2014 June 30
 var method = {};

@@ -5,6 +5,7 @@ var _ = require('lodash');
 var config = util.getConfig();
 
 var methods = [
+  'ZERO',
   'MACD',
   'x2MACD',
   'nikiehihsa',

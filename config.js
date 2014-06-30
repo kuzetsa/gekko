@@ -34,7 +34,7 @@ config.watch = {
 
 config.tradingAdvisor = {
   enabled: true,
-  method: 'x3nikiehihsa',
+  method: 'ZERO',
   candleSize: 1,
   historySize: 887
 };
@@ -102,6 +102,20 @@ config.x3nikiehihsa = {
   short: 53,
   long: 109,
   signal: 41,
+  // the difference between the EMAs (to act as triggers)
+  thresholds: {
+    down: -9999,
+    up: 0.00000001,
+  }
+};
+
+// ZERO settings:
+config.x3nikiehihsa = {
+  // EMA weight (α)
+  // the higher the weight, the more smooth (and delayed) the line
+  short: 43,
+  long: 83,
+  signal: 29,
   // the difference between the EMAs (to act as triggers)
   thresholds: {
     down: -9999,

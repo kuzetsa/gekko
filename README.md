@@ -85,6 +85,7 @@ If you want to contribute or are interested in how Gekko works:
 * This project is inspired by the [GoxTradingBot](https://github.com/virtimus/GoxTradingBot/) Chrome plugin (though no code is taken from it).
 * Original implementation of gekko was written by [Mike van Rossum](https://github.com/askmike/gekko)
 * After 2014, June 25th, reinvestment-only fork maintained by [Sarah White AKA kuzetsa](https://github.com/kuzetsa/gekko)
+* Credits for the reduced-lag EMA methods go to Patrick G. Mulloy for publishing "Smoothing Data With Less Lag" in 1994
 
 ## License
 

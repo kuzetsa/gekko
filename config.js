@@ -110,7 +110,7 @@ config.x3nikiehihsa = {
 };
 
 // ZERO settings:
-config.x3nikiehihsa = {
+config.ZERO = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
   short: 43,

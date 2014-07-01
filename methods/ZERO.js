@@ -61,6 +61,14 @@ method.check = function() {
         direction: 'up',
       };
       this.advice('long');
+    } else {
+      // portfolioManager.js needs audited
+      // as a workaround, this logic will
+      // IMMEDIATELY release the lizards
+      // but it doesn't reset the trend
+      // ... it's to un-enforce position
+      // kuzetsa, 2014 June/July
+      this.advice('lizard');
     }
 
     this.trend.duration++;

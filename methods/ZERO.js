@@ -5,7 +5,7 @@ var log = require('../core/log.js');
 var config = require('../core/util.js').getConfig();
 var settings = config.ZERO;
 
-// ZERO-lag MACD variant by kuzetsa, 2014 June 30
+// ZERO-lag MACD variant by kuzetsa, 2014 June/July
 var method = {};
 
 // prepare everything our method needs
@@ -45,34 +45,31 @@ method.log = function() {
 };
 
 method.check = function() {
+
   var zero = this.indicators.zero;
+  var macd = zero.diff;
+  var macdiff = zero.result;
+  var minup = settings.thresholds.up;
+  var filtered = Math.min(macd, macdiff, minup);
 
-  var macddiff = zero.result;
-  // This is not a histogram...
-  // it's more of an oscillator
-  // and it's nearly identical to MACD
-  // ... but it uses the entire candle
-
-  if(macddiff > settings.thresholds.up) {
+  if(filtered >= minup) {
 
     // new trend detected
     if(this.trend.direction !== 'up') {
-      // reset the state for the new trend
       this.trend = {
         duration: 0,
         direction: 'up',
       };
+      this.advice('long');
     }
 
     this.trend.duration++;
-
     log.info('In uptrend since', this.trend.duration, 'candle(s)');
-
-      this.advice('long');
 
   } else {
 
       this.trend = {
+        // lizard duration always zero
         duration: 0,
         direction: 'lizards',
       };

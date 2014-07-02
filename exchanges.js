@@ -185,6 +185,30 @@ var exchanges = [
     providesHistory: false
   },
   {
+    name: 'Cryptsy',
+    slug: 'cryptsy',
+    direct: false,
+    infinityOrder: false,
+    currencies: ['BTC'],
+    assets: ['DOGE', 'DVC', 'PPC', 'LTC', 'DRK' ],
+    markets: [
+      {
+        pair: ['BTC', 'DOGE'], market_id: 132, minimalOrder: { amount: 100, unit: 'asset' }
+      },
+      {
+        pair: ['BTC', 'DVC'], market_id: 40, minimalOrder: { amount: 1, unit: 'asset' }
+      },
+      {
+        pair: ['BTC', 'LTC'], market_id: 3, minimalOrder: { amount: 0.001, unit: 'asset' }
+      },
+      {
+        pair: ['BTC', 'DRK'], market_id: 155, minimalOrder: { amount: 0.001, unit: 'asset' }
+      }
+    ],
+    requires: ['key', 'secret'],
+    providesHistory: false
+  },
+  {
     name: 'Kraken',
     slug: 'kraken',
     direct: false,

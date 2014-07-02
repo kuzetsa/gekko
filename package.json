@@ -12,6 +12,7 @@
   },
   "author": "Mike van Rossum <mike@mvr.me>",
   "dependencies": {
+    "cryptsy-api": "0.1.x",
     "mtgox-apiv2": "1.1.x",
     "lodash": "2.x",
     "moment": "2.4.x",

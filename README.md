@@ -110,6 +110,8 @@ Copyright (c) 2013-2014 Sarah White (*AKA* **kuzetsa**, *forked 2014 June 25th*)
     You should have received a copy of the GNU Affero General Public License
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+---
+
 #### The MIT License (MIT)
 
 Copyright (c) 2014 Mike van Rossum <mike@mvr.me> (*original author, initial code in gekkobot*)

@@ -112,6 +112,8 @@ Copyright (c) 2013-2014 Sarah White (*AKA* **kuzetsa**, *forked 2014 June 25th*)
 
 ---
 
+> I, [Sarah White (kuzetsa)](https://github.com/kuzetsa/) have personally opted to use the "sublicensing" right under the permissive MIT license to sublicense my own work. [All of my own code and documentation commits](https://github.com/kuzetsa/gekko/commits?author=kuzetsa) in this project are under the [AGPLv3 license](https://github.com/kuzetsa/gekko/blob/c325e25ba78fd9657dff275a4f901311755e7c67/LICENSE.md)
+
 #### The MIT License (MIT)
 
 Copyright (c) 2014 Mike van Rossum <mike@mvr.me> (*original author, initial code in gekkobot*)

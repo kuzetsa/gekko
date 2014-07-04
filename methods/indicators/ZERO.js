@@ -9,7 +9,6 @@
 
 var x3EMA = require('./x3EMA.js');
 var x2EMA = require('./x2EMA.js');
-var x1EMA = require('./EMA.js');
 
 var Indicator = function(config) {
   this.diff = false;
@@ -21,7 +20,7 @@ var Indicator = function(config) {
   this.longL = new x2EMA(config.long);
   this.shortH = new x3EMA(config.short);
   this.longH = new x2EMA(config.long);
-  this.signal = new x1EMA(config.signal);
+  this.signal = new x3EMA(config.signal);
 };
 
 Indicator.prototype.update = function(candle) {

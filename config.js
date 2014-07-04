@@ -32,11 +32,15 @@ config.watch = {
 //                       CONFIGURING TRADING ADVICE
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// value of p+12 where (p,p+6,p+12) are all prime
+// sexy prime triple: 1427, 1433, 1439 :)
+// 1429 is also prime (1440 minutes per day)
+
 config.tradingAdvisor = {
   enabled: true,
   method: 'ZERO',
   candleSize: 1,
-  historySize: 887
+  historySize: 1439
 };
 
 // Exponential Moving Averages settings:
@@ -109,13 +113,16 @@ config.x3nikiehihsa = {
   }
 };
 
+// value of p+12 where (p,p+6,p+12) are all prime
+// sexy prime triple: 1427, 1433, 1439 :)
+// 1429 is also prime (1440 minutes per day)
 // ZERO settings:
 config.ZERO = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
-  short: 43,
-  long: 83,
-  signal: 29,
+  short: 1427,
+  long: 1433,
+  signal: 1429,
   // the difference between the EMAs (to act as triggers)
   thresholds: {
     down: -9999,

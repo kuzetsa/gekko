@@ -50,8 +50,9 @@ method.check = function() {
   var macd = zero.diff;
   var macdiff = zero.result;
   var minup = settings.thresholds.up;
+  // "divination" lets the signal happen sooner
   var divination = macd + settings.crystalball;
-  var filtered = Math.min(macd, macdiff, divination);
+  var filtered = Math.min(macdiff, divination);
 
   if(filtered >= minup) {
 

@@ -68,7 +68,12 @@ var equals = util.equals;
 
 // even though we have leap seconds, every
 // day has the same amount of minutes
-var MINUTES_IN_DAY = 1439;
+
+// these are NOT the same thing!!!
+// -- kuzetsa, 2014 July 5th
+var MINUTES_IN_DAY = 1440;
+var START_OF_LAST_MINUTE_IN_DAY = 1439;
+
 
 var Manager = function() {
   _.bindAll(this);
@@ -343,8 +348,10 @@ Manager.prototype.checkDaysMeta = function(err, results) {
       return false;
     }
 
-    if(!isFirstDay && day.endCandle.s !== MINUTES_IN_DAY) {
-      // this day doesn't end at midnight
+    if(!isFirstDay && day.endCandle.s !== START_OF_LAST_MINUTE_IN_DAY) {
+      // the day REALLY DOES end at midnight, however...
+      // the last minute is 1 minute before midnight
+      // kuzetsa, 2014 July 5th
       return false;
     }
     
@@ -463,7 +470,7 @@ Manager.prototype.checkHistoryAge = function(data) {
     return;
   }
 
-  if(history.available.last.minute === MINUTES_IN_DAY) {
+  if(history.available.last.minute === START_OF_LAST_MINUTE_IN_DAY) {
     this.increaseDay();
   }
 
@@ -555,7 +562,7 @@ Manager.prototype.broadcastHistory = function(next, args) {
   // get the candles for each required day
   var iterator = function(mom, next) {
     var from = 0;
-    var to = MINUTES_IN_DAY;
+    var to = START_OF_LAST_MINUTE_IN_DAY;
 
     if(equals(mom.day, last.day)) {
       // on first (most recent) day
@@ -676,7 +683,7 @@ Manager.prototype.processTrades = function(data) {
     log.debug('fetch spans midnight');
 
     // old day
-    batches[0] = this.addEmtpyCandles(_.first(batches), this.mostRecentCandle, MINUTES_IN_DAY);
+    batches[0] = this.addEmtpyCandles(_.first(batches), this.mostRecentCandle, START_OF_LAST_MINUTE_IN_DAY);
 
     // new day
 
@@ -695,7 +702,7 @@ Manager.prototype.processTrades = function(data) {
     // we already know they are all from current day
 
     // but if the most recent candle is from yesterday ...
-    if(this.mostRecentCandle && this.mostRecentCandle.s === MINUTES_IN_DAY) {
+    if(this.mostRecentCandle && this.mostRecentCandle.s === START_OF_LAST_MINUTE_IN_DAY) {
       ghostCandle = _.clone(this.mostRecentCandle);
       ghostCandle.s = -1;
       batch = this.addEmtpyCandles(candles, ghostCandle);
@@ -828,7 +835,7 @@ Manager.prototype.splitCandleDays = function(candles) {
 // add empty candles. End is a minute # since midnight.
 //
 // for example:
-//    addEmtpyCandles(candles, 0, MINUTES_IN_DAY)
+//    addEmtpyCandles(candles, 0, START_OF_LAST_MINUTE_IN_DAY)
 // would return an array of candles from:
 //     [midnight up to][batch without gaps][up to next midnight - 1]
 Manager.prototype.addEmtpyCandles = function(candles, start, end) {

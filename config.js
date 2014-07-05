@@ -123,6 +123,8 @@ config.ZERO = {
   short: 1427,
   long: 1433,
   signal: 1429,
+  // how optimistic is the MACD extrapolation going to be?
+  crystalball: 0.00001234,
   // the difference between the EMAs (to act as triggers)
   thresholds: {
     down: -9999,

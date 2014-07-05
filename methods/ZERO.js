@@ -50,7 +50,8 @@ method.check = function() {
   var macd = zero.diff;
   var macdiff = zero.result;
   var minup = settings.thresholds.up;
-  var filtered = Math.min(macd, macdiff, minup);
+  var divination = macd + settings.crystalball;
+  var filtered = Math.min(macd, macdiff, divination);
 
   if(filtered >= minup) {
 

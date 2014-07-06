@@ -120,6 +120,83 @@ Trader.prototype.getPortfolio = function(callback) {
     if(err)
       return this.retry(this.getPortfolio, args, err);
 
+    // error handler to troubleshoot issue #4
+    var itBroke = false;
+    if (typeof data == "object") {
+    log.debug("API data object returned from getPortfolio()");
+    }
+    if (typeof data.BTC == "object") {
+    log.debug("data.BTC object returned from getPortfolio()");
+    }
+    if (typeof data.GHS == "object") {
+    log.debug("data.GHS object returned from getPortfolio()");
+    }
+    if (typeof data.NMC == "object") {
+    log.debug("data.NMC object returned from getPortfolio()");
+    }
+    if (typeof data == "undefined") {
+    itBroke = true;
+    log.debug("API data undefined state during getPortfolio()");
+    }
+    if (typeof data.BTC == "undefined") {
+    itBroke = true;
+    log.debug("data.BTC undefined state during getPortfolio()");
+    }
+    if (typeof data.GHS == "undefined") {
+    itBroke = true;
+    log.debug("data.GHS undefined state during getPortfolio()");
+    }
+    if (typeof data.NMC == "undefined") {
+    itBroke = true;
+    log.debug("data.NMC undefined state during getPortfolio()");
+    }
+    if (typeof data.BTC.available == "undefined") {
+    itBroke = true;
+    log.debug("data.BTC.available undefined state during getPortfolio()");
+    }
+    if (typeof data.GHS.available == "undefined") {
+    itBroke = true;
+    log.debug("data.GHS.available undefined state during getPortfolio()");
+    }
+    if (typeof data.NMC.available == "undefined") {
+    itBroke = true;
+    log.debug("data.NMC.available undefined state during getPortfolio()");
+    }
+    if (typeof data.BTC.orders == "undefined") {
+    // itBroke = true;
+    log.debug("data.BTC.orders undefined state during getPortfolio()");
+    }
+    if (typeof data.GHS.orders == "undefined") {
+    // itBroke = true;
+    log.debug("data.GHS.orders undefined state during getPortfolio()");
+    }
+    if (typeof data.NMC.orders == "undefined") {
+    // itBroke = true;
+    log.debug("data.NMC.orders undefined state during getPortfolio()");
+    }
+    log.debug("data.BTC.available is:", typeof data.BTC.available);
+    log.debug("data.BTC.orders is:", typeof data.GHS.orders);
+    log.debug("data.GHS.available is:", typeof data.GHS.available);
+    log.debug("data.GHS.orders is:", typeof data.GHS.orders);
+    log.debug("data.NMC.available is:", typeof data.GHS.available);
+    log.debug("data.NMC.orders is:", typeof data.GHS.orders);
+
+    if (itBroke) {
+    // the condition where "orders" is undefined...
+    // the parseFloat() javascript utility turns it into zero
+    // that's fortunate, as cex.io only returns "orders" json
+    // when there are active orders on your account :)
+    // -- kuzetsa, 2014 July 6th
+    log.debug("itBroke");
+    return;
+    }
+    // currency & asset handler can be refactored
+    // probably a "switch" statement is less ugly
+    // that will be done in a future commit
+    // this is the end of the error handler section
+    // -- kuzetsa, 2014 July 6th
+
+
     currency = parseFloat(data.BTC.available)
     if(parseFloat(data.BTC.orders)){
       currency -= parseFloat(data.BTC.orders)

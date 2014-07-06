@@ -14,7 +14,7 @@ config.history = {
   directory: './history/'
 };
 
-config.debug = false; // for additional logging / debugging
+config.debug = true; // for additional logging / debugging
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //                         WATCHING A MARKET

@@ -13,14 +13,14 @@ var x2EMA = require('./x2EMA.js');
 var Indicator = function(config) {
   this.diff = false;
   this.shortC = new x3EMA(config.short);
-  this.longC = new x2EMA(config.long);
+  this.longC = new x3EMA(config.long);
   this.shortO = new x3EMA(config.short);
-  this.longO = new x2EMA(config.long);
+  this.longO = new x3EMA(config.long);
   this.shortL = new x3EMA(config.short);
-  this.longL = new x2EMA(config.long);
+  this.longL = new x3EMA(config.long);
   this.shortH = new x3EMA(config.short);
-  this.longH = new x2EMA(config.long);
-  this.signal = new x3EMA(config.signal);
+  this.longH = new x3EMA(config.long);
+  this.signal = new x2EMA(config.signal);
 };
 
 Indicator.prototype.update = function(candle) {

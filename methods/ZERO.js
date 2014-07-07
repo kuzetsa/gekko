@@ -54,7 +54,7 @@ method.check = function() {
   var divination = macd + settings.crystalball;
   var filtered = Math.min(macdiff, divination);
 
-  if(filtered >= minup) {
+  if ((filtered >= minup) && (macd <= 0)) {
 
     // new trend detected
     if(this.trend.direction !== 'up') {

@@ -48,6 +48,7 @@ method.check = function() {
 
   var zero = this.indicators.zero;
   var macd = zero.diff;
+  var signal = zero.signal.result;
   var macdiff = zero.result;
   var minup = settings.thresholds.up;
   // "divination" lets the signal happen sooner
@@ -55,7 +56,7 @@ method.check = function() {
   var divination = macd + crystalball;
   var filtered = Math.min(macdiff, divination);
 
-  if ((filtered >= minup) && (macd <= crystalball)) {
+  if ((filtered >= minup) && (macd <= crystalball) && (signal < 0)) {
 
     // new trend detected
     if(this.trend.direction !== 'up') {

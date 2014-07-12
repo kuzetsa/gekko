@@ -125,6 +125,8 @@ config.ZERO = {
   signal: 1429,
   // how optimistic is the MACD extrapolation going to be?
   crystalball: 0.00001234,
+  // how large is the stats window for sanity checking?
+  window: 4320,
   // the difference between the EMAs (to act as triggers)
   thresholds: {
     down: -9999,

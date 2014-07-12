@@ -1,5 +1,5 @@
 // MACD variant using Patrick Mulloy's ideas
-// with additional mod by kuzetsa, 2014 June 30:
+// with additional mods by kuzetsa, 2014 June/July:
 
 // Heikin-Ashi candles, etc.
 // NOT QUITE based on xClose average
@@ -7,8 +7,14 @@
 // this method should have less overshoot
 // using ONLY x3EMA was a bit too jumpy
 
+// additionally, a new "averaging window"
+// this stats window determines percentiles
+// currently: 5/10/25/40/50/60/75/90/95th
+// "50th" percentile is the median price.
+
 var x3EMA = require('./x3EMA.js');
 var x2EMA = require('./x2EMA.js');
+var windowstats = require('./windowstats.js');
 
 var Indicator = function(config) {
   this.diff = false;
@@ -21,6 +27,7 @@ var Indicator = function(config) {
   this.shortH = new x3EMA(config.short);
   this.longH = new x3EMA(config.long);
   this.signal = new x2EMA(config.signal);
+  this.windowstats = new windowstats(config.window);
 };
 
 Indicator.prototype.update = function(candle) {
@@ -28,7 +35,9 @@ Indicator.prototype.update = function(candle) {
   var close = candle.c;
   var high = candle.h;
   var low = candle.l;
+  var vwap = candle.p;
 
+  this.windowstats.update(vwap);
   this.shortC.update(close);
   this.longC.update(close);
   this.shortO.update(open);

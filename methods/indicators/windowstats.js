@@ -37,27 +37,27 @@ Indicator.prototype.update = function(price) {
 }
 
 Indicator.prototype.calculate = function() {
-  var p5th = floor(this.period * (5 / 100));
-  var p10th = floor(this.period * (10 / 100));
-  var p25th = floor(this.period * (25 / 100));
-  var p40th = floor(this.period * (40 / 100));
-  var p50th = floor(this.period * (50 / 100));
-  var p60th = floor(this.period * (60 / 100));
-  var p75th = floor(this.period * (75 / 100));
-  var p90th = floor(this.period * (90 / 100));
-  var p95th = floor(this.period * (95 / 100));
+  var p5th = Math.floor(this.period * (5 / 100));
+  var p10th = Math.floor(this.period * (10 / 100));
+  var p25th = Math.floor(this.period * (25 / 100));
+  var p40th = Math.floor(this.period * (40 / 100));
+  var p50th = Math.floor(this.period * (50 / 100));
+  var p60th = Math.floor(this.period * (60 / 100));
+  var p75th = Math.floor(this.period * (75 / 100));
+  var p90th = Math.floor(this.period * (90 / 100));
+  var p95th = Math.floor(this.period * (95 / 100));
 
   var sorted = this.window;
   sorted.sort()
-  this.p5th = sorted(p5th);
-  this.p10th = sorted(p10th);
-  this.p25th = sorted(p25th);
-  this.p40th = sorted(p40th);
-  this.p50th = sorted(p50th);
-  this.p60th = sorted(p60th);
-  this.p75th = sorted(p75th);
-  this.p90th = sorted(p90th);
-  this.p95th = sorted(p95th);
+  this.p5th = sorted[p5th];
+  this.p10th = sorted[p10th];
+  this.p25th = sorted[p25th];
+  this.p40th = sorted[p40th];
+  this.p50th = sorted[p50th];
+  this.p60th = sorted[p60th];
+  this.p75th = sorted[p75th];
+  this.p90th = sorted[p90th];
+  this.p95th = sorted[p95th];
 }
 
 module.exports = Indicator;

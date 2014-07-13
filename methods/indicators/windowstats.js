@@ -30,7 +30,7 @@ var Indicator = function(period) {
   this.p75ndx = Math.floor(this.period * (75 / 100));
   this.p90ndx = Math.floor(this.period * (90 / 100));
   this.p95ndx = Math.floor(this.period * (95 / 100));
-}
+};
 
 Indicator.prototype.update = function(price) {
   var oldest = 0;
@@ -45,7 +45,7 @@ Indicator.prototype.update = function(price) {
     // remove first (oldest) from...
 
     // incremental sorting array:
-    index = BinarySearch(this.window, oldest);
+    index = BinarySearch.call(this.window, oldest);
     this.sorted.splice(this.sorted, 1); // remove only
 
     // moving window:
@@ -56,13 +56,13 @@ Indicator.prototype.update = function(price) {
 
   this.window.push(price);
 
-  index = BinarySearch(this.window, price);
-  this.sorted.splice(index, 0, price) // insert only
+  index = BinarySearch.call(this.window, price);
+  this.sorted.splice(index, 0, price); // insert only
 
   this.calculate(price);
 
   return this.p50th; // return the median as a default
-}
+};
 
 Indicator.prototype.calculate = function() {
   this.p5th = this.sorted[this.p5ndx];
@@ -74,6 +74,6 @@ Indicator.prototype.calculate = function() {
   this.p75th = this.sorted[this.p75ndx];
   this.p90th = this.sorted[this.p90ndx];
   this.p95th = this.sorted[this.p95ndx];
-}
+};
 
 module.exports = Indicator;

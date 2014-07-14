@@ -3,11 +3,15 @@
 // working code has existed for over 50 years
 // I'm only mostly sure this is bug-free...
 
-var BinarySearch = function(arrayToSearch, value) {
+var ArrayWrapper = function(arrayToSearch) {
   // "Array" object primative is case sensitive,
   // but just to be clear, CamelCaseVerbosely
+  this.arrayToSearch = arrayToSearch;
+};
 
-  var high = arrayToSearch.length - 1; // off by one
+ArrayWrapper.prototype.BinarySearch = function(value) {
+
+  var high = this.arrayToSearch.length - 1; // off by one
   var low = 0;
   var pivot = 0;
   var WhatIsHere = 0;
@@ -21,7 +25,7 @@ var BinarySearch = function(arrayToSearch, value) {
 
     /*jshint bitwise: false */
     pivot = low + ((high - low) >>> 1); // was NOT a typo, jshint!!!
-    WhatIsHere = arrayToSearch[pivot];
+    WhatIsHere = this.arrayToSearch[pivot];
 
     if (WhatIsHere < value) {
       low  = pivot + 1; // "lower bound" adjustment
@@ -36,4 +40,4 @@ var BinarySearch = function(arrayToSearch, value) {
   // we're here now, assume it's "close enough", right?
 };
 
-module.exports = BinarySearch;
+module.exports = ArrayWrapper;

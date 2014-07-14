@@ -39,6 +39,7 @@ method.log = function() {
   var windowstats = zero.windowstats;
 
   // historical stats for the sanity checking window:
+  log.debug('\t', 'VWAP:', windowstats.vwap.toFixed(digits));
   log.debug('(percentiles) window stats:');
   log.debug('\t', '5th:', windowstats.p5th.toFixed(digits));
   log.debug('\t', '10th:', windowstats.p10th.toFixed(digits));
@@ -62,6 +63,7 @@ method.log = function() {
 method.check = function() {
 
   var zero = this.indicators.zero;
+  var windowstats = zero.windowstats;
   var macd = zero.diff;
   var signal = zero.signal.result;
   var macdiff = zero.result;
@@ -71,7 +73,7 @@ method.check = function() {
   var divination = macd + crystalball;
   var filtered = Math.min(macdiff, divination);
 
-  if ((filtered >= minup) && (macd <= crystalball) && (signal < 0)) {
+  if ((filtered >= minup) && (macd <= crystalball) && (signal < 0) && (windowstats.vwap <= windowstats.p25th)) {
 
     // new trend detected
     if(this.trend.direction !== 'up') {

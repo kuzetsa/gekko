@@ -30,6 +30,7 @@ var Indicator = function(period) {
   this.p75ndx = Math.floor(this.period * (75 / 100));
   this.p90ndx = Math.floor(this.period * (90 / 100));
   this.p95ndx = Math.floor(this.period * (95 / 100));
+  this.vwap = 0;
 };
 
 Indicator.prototype.update = function(price) {
@@ -41,6 +42,7 @@ Indicator.prototype.update = function(price) {
   SanitizedPrice *= 100000000;
   SanitizedPrice = Math.round(SanitizedPrice);
   SanitizedPrice /= 100000000;
+  this.vwap = SanitizedPrice; 
 
   if (this.age >= this.period) {
     this.enough = true;

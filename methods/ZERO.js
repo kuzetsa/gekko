@@ -36,6 +36,21 @@ method.update = function(candle) {
 method.log = function() {
   var digits = 8;
   var zero = this.indicators.zero;
+  var windowstats = zero.windowstats;
+
+  // historical stats for the sanity checking window:
+  log.debug('(percentiles) window stats:');
+  log.debug('\t', '5th:', windowstats.p5th.toFixed(digits));
+  log.debug('\t', '10th:', windowstats.p10th.toFixed(digits));
+  log.debug('\t', '25th:', windowstats.p25th.toFixed(digits));
+  log.debug('\t', '40th:', windowstats.p40th.toFixed(digits));
+  log.debug('\t', 'median:', windowstats.p50th.toFixed(digits));
+
+  // these work, but are irrelevant for buy-and-hold reinvestment:
+  // log.debug('\t', '60th:', windowstats.p60th.toFixed(digits));
+  // log.debug('\t', '75th:', windowstats.p75th.toFixed(digits));
+  // log.debug('\t', '90th:', windowstats.p90th.toFixed(digits));
+  // log.debug('\t', '95th:', windowstats.p95th.toFixed(digits));
 
   log.info('\t', '[shortEMA]CLOSE:', zero.shortC.result.toFixed(digits));
   log.info('\t', '[longEMA]CLOSE:', zero.longC.result.toFixed(digits));

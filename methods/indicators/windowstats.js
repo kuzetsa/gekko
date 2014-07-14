@@ -35,6 +35,12 @@ var Indicator = function(period) {
 Indicator.prototype.update = function(price) {
   var oldest = 0;
   var index = 0;
+  var SearchTheArray = new BinarySearch(this.sorted);
+
+  var SanitizedPrice = price; // catch floating point errors
+  SanitizedPrice *= 100000000;
+  SanitizedPrice = Math.round(SanitizedPrice);
+  SanitizedPrice /= 100000000;
 
   if (this.age >= this.period) {
     this.enough = true;
@@ -45,21 +51,21 @@ Indicator.prototype.update = function(price) {
     // remove first (oldest) from...
 
     // incremental sorting array:
-    index = BinarySearch.call(this.window, oldest);
-    this.sorted.splice(this.sorted, 1); // remove only
+    index = SearchTheArray.BinarySearch(oldest);
+    this.sorted.splice(index, 1); // remove only
 
     // moving window:
-    this.window.splice(0, 1);
+    this.window.shift();
   }
 
   this.age++;
 
-  this.window.push(price);
+  this.window.push(SanitizedPrice);
 
-  index = BinarySearch.call(this.window, price);
-  this.sorted.splice(index, 0, price); // insert only
+  index = SearchTheArray.BinarySearch(SanitizedPrice);
+  this.sorted.splice(index, 0, SanitizedPrice); // insert only
 
-  this.calculate(price);
+  this.calculate();
 
   return this.p50th; // return the median as a default
 };

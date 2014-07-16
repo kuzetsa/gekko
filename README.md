@@ -6,21 +6,25 @@
 
 ## Gekko (*this tool / bot*)
 
-This tool is based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer), and is written the [node.js](https://github.com/joyent/node) dialect of javascript, which itself based on v8, Google's open source JavaScript engine. **WARNING:** *Use Gekko at you own risk.*
+This tool is based on [REST APIs](http://en.wikipedia.org/wiki/Representational_state_transfer), and is written the [node.js](https://github.com/joyent/node) dialect of javascript, which itself based on v8, Google's open source JavaScript engine.
+<p>&nbsp;<br>&nbsp;</p>
+**WARNING:** *Use Gekko at you own risk.*
 
-## Automated reinvestment
+---
+
+### Automated reinvestment
 
 Gekko comes with a few [technical analysis (TA)](http://en.wikipedia.org/wiki/Technical_analysis) methods which implement a single indicator (*DEMA, MACD, RSI, and PPO*). The parameters of these indicators are all configurable and changing them changes the outcome drastically. Gekko's interface allows you to add your own trading methods. Read more about that in the [documentation](https://github.com/kuzetsa/gekko/blob/master/docs/internals/trading_methods.md). 
 
 **Note:** *much of this information is outdated, and/or not relevant to reinvestment-only mode.*
 
-## Supported exchanges
+### Supported exchanges
 
 Gekko reinvests cloud mining income on the following platforms:
 
-- CEX.io
+- CEX.io (*Currently only BTC, planned support for NMC reinvestment.*)
 
-## Plugin interface
+### Plugin interface
 
 Gekko also has a plugin system that can do certain things whenever something happens or let Gekko communicate through more platforms. Gekko implements the following example plugins:
 
@@ -30,7 +34,7 @@ Gekko also has a plugin system that can do certain things whenever something hap
 - Profit Simulator (paper trader): Hold a fake portfolio and simulate trades based on advice.
 - Redis Beacon: Broadcast events propagating through Gekko on [Redis pub/sub](http://redis.io/topics/pubsub).
 
-## Installing Gekko
+### Installing Gekko
 
 Windows user? Here is a [step-by-step guide](https://github.com/kuzetsa/gekko/blob/master/docs/installing_gekko_on_windows.md) on how to get Gekko running on Windows.
 
@@ -47,11 +51,11 @@ You need to download Gekko's dependencies, which can easily be done with [npm](h
     npm install
 ```
 
-## Configuring Gekko / before you start
+### Configuring Gekko / before you start
 
 Read the [configuring Gekko documentation](https://github.com/kuzetsa/gekko/tree/master/docs/Configuring_gekko.md) for a detailed explanation.
 
-## Running Gekko
+### Running Gekko
 
 To run the bot you just have to start Gekko:
 
@@ -61,7 +65,7 @@ To run the bot you just have to start Gekko:
 
 You can also run Gekko silently or use more complex features, for examples check out the [advanced features](https://github.com/kuzetsa/gekko/tree/master/docs/Advanced_features.md).
 
-## Updating Gekko
+### Updating Gekko
 
 If you installed the bot via git you can easily fetch the latest updates by running:
 
@@ -70,7 +74,7 @@ If you installed the bot via git you can easily fetch the latest updates by runn
     npm update
 ```
 
-## How does Gekko work?
+### How does Gekko work?
 
 If you want to contribute or are interested in how Gekko works:
 
@@ -85,9 +89,9 @@ If you want to contribute or are interested in how Gekko works:
 * This project is inspired by the [GoxTradingBot](https://github.com/virtimus/GoxTradingBot/) Chrome plugin (though no code is taken from it).
 * Original implementation of gekko was written by [Mike van Rossum](https://github.com/askmike/gekko)
 * After 2014, June 25th, reinvestment-only fork maintained by [Sarah White AKA kuzetsa](https://github.com/kuzetsa/gekko)
-* Credits for the reduced-lag EMA methods go to Patrick G. Mulloy for publishing "Smoothing Data With Less Lag" in 1994
+* Credits for the reduced-lag EMA methods go to Patrick G. Mulloy for publishing<br>"Smoothing Data With Less Lag" in 1994
 
-## License
+### License
 
 (*Legal rights and restrictions to copy and use this code*)
 

@@ -12,8 +12,10 @@ var Indicator = function(period) {
   this.sorted = [];
   this.enough = false;
   this.age = 0;
+  this.p1st = 0;
   this.p5th = 0;
   this.p10th = 0;
+  this.pFancyEighth = 0;
   this.p25th = 0;
   this.p40th = 0;
   this.p50th = 0;
@@ -21,8 +23,13 @@ var Indicator = function(period) {
   this.p75th = 0;
   this.p90th = 0;
   this.p95th = 0;
+  this.p99th = 0;
+  this.p1ndx = Math.floor(this.period * (1 / 100));
   this.p5ndx = Math.floor(this.period * (5 / 100));
   this.p10ndx = Math.floor(this.period * (10 / 100));
+  var FancyEight = (0 - (1 / 3)); // one over cube root 541
+  FancyEight = Math.pow(541, FancyEight); // is aprox 1/8th
+  this.pFancyEightNdx = Math.floor(this.period * FancyEight);
   this.p25ndx = Math.floor(this.period * (25 / 100));
   this.p40ndx = Math.floor(this.period * (40 / 100));
   this.p50ndx = Math.floor(this.period * (50 / 100));
@@ -30,6 +37,7 @@ var Indicator = function(period) {
   this.p75ndx = Math.floor(this.period * (75 / 100));
   this.p90ndx = Math.floor(this.period * (90 / 100));
   this.p95ndx = Math.floor(this.period * (95 / 100));
+  this.p99ndx = Math.floor(this.period * (99 / 100));
   this.vwap = 0;
 };
 
@@ -73,8 +81,10 @@ Indicator.prototype.update = function(price) {
 };
 
 Indicator.prototype.calculate = function() {
+  this.p1st = this.sorted[this.p1ndx];
   this.p5th = this.sorted[this.p5ndx];
   this.p10th = this.sorted[this.p10ndx];
+  this.pFancyEighth = this.sorted[this.pFancyEightNdx];
   this.p25th = this.sorted[this.p25ndx];
   this.p40th = this.sorted[this.p40ndx];
   this.p50th = this.sorted[this.p50ndx];
@@ -82,6 +92,7 @@ Indicator.prototype.calculate = function() {
   this.p75th = this.sorted[this.p75ndx];
   this.p90th = this.sorted[this.p90ndx];
   this.p95th = this.sorted[this.p95ndx];
+  this.p99th = this.sorted[this.p99ndx];
 };
 
 module.exports = Indicator;

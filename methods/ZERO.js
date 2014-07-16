@@ -41,8 +41,10 @@ method.log = function() {
   // historical stats for the sanity checking window:
   log.debug('\t', 'VWAP:', windowstats.vwap.toFixed(digits));
   log.debug('(percentiles) window stats:');
+  log.debug('\t', '1st:', windowstats.p1st.toFixed(digits));
   log.debug('\t', '5th:', windowstats.p5th.toFixed(digits));
   log.debug('\t', '10th:', windowstats.p10th.toFixed(digits));
+  log.debug('\t', '12th~ish:', windowstats.pFancyEighth.toFixed(digits));
   log.debug('\t', '25th:', windowstats.p25th.toFixed(digits));
   log.debug('\t', '40th:', windowstats.p40th.toFixed(digits));
   log.debug('\t', 'median:', windowstats.p50th.toFixed(digits));
@@ -52,6 +54,7 @@ method.log = function() {
   // log.debug('\t', '75th:', windowstats.p75th.toFixed(digits));
   // log.debug('\t', '90th:', windowstats.p90th.toFixed(digits));
   // log.debug('\t', '95th:', windowstats.p95th.toFixed(digits));
+  // log.debug('\t', '99th:', windowstats.p99th.toFixed(digits));
 
   log.info('\t', '[shortEMA]CLOSE:', zero.shortC.result.toFixed(digits));
   log.info('\t', '[longEMA]CLOSE:', zero.longC.result.toFixed(digits));
@@ -73,7 +76,7 @@ method.check = function() {
   var divination = macd + crystalball;
   var filtered = Math.min(macdiff, divination);
 
-  if ((filtered >= minup) && (macd <= crystalball) && (signal < 0) && (windowstats.vwap <= windowstats.p25th)) {
+  if ((filtered >= minup) && (macd <= crystalball) && (signal < 0) && (windowstats.vwap <= windowstats.pFancyEighth)) {
 
     // new trend detected
     if(this.trend.direction !== 'up') {

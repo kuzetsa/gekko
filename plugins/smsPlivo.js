@@ -57,8 +57,12 @@ SMSPlivo.prototype.setup = function(done) {
     } else {
       this.done();
     }
+
+    if(smsConfig.testProcessAdvice){
+      this.testProcessAdvice();
+    }
     
-  log.debug('Setup SMS adviser.');
+  log.debug('Setup SMS (Plivo) adviser successfully.');
 }
 
 SMSPlivo.prototype.mail = function(content, done) {
@@ -76,14 +80,18 @@ SMSPlivo.prototype.mail = function(content, done) {
   }
 
   self.client.send_message(buildMessage(), function(status, response) {
-      log.debug('SMS Plivo Sending Status: ', status);
-      log.debug('SMS Plivo API Response: ', response);
-      var error = null;
+      // 202 and 200 are normal status codes from Plivo.
       if(status != 202 && status != 200){
-        error = response;
-        self.checkResults(error);
+        // note, reponse will contain status code.
+        self.checkResults(response);
+        if(done){
+          done();
+        }
       } else {
-        done();
+        log.debug("SMS sent successfully via Plivo: ", response);
+        if(done){
+          done();
+        }
       }
   });
 }
@@ -104,6 +112,14 @@ SMSPlivo.prototype.processAdvice = function(advice) {
     this.price
   ].join('');
   this.mail(text);
+}
+
+SMSPlivo.prototype.testProcessAdvice = function(){
+  var advice = {
+    recommandation: "short"
+  };
+  this.price = 0;
+  this.processAdvice(advice);
 }
 
 SMSPlivo.prototype.checkResults = function(err) {

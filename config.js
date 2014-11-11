@@ -32,10 +32,6 @@ config.watch = {
 //                       CONFIGURING TRADING ADVICE
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// value of p+12 where (p,p+6,p+12) are all prime
-// sexy prime triple: 1427, 1433, 1439 :)
-// 1429 is also prime (1440 minutes per day)
-
 config.tradingAdvisor = {
   enabled: true,
   method: 'ZERO',
@@ -113,9 +109,6 @@ config.x3nikiehihsa = {
   }
 };
 
-// value of p+12 where (p,p+6,p+12) are all prime
-// sexy prime triple: 1427, 1433, 1439 :)
-// 1429 is also prime (1440 minutes per day)
 // ZERO settings:
 config.ZERO = {
   // EMA weight (α)

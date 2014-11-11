@@ -40,7 +40,7 @@ config.tradingAdvisor = {
   enabled: true,
   method: 'ZERO',
   candleSize: 1,
-  historySize: 1439
+  historySize: 1440
 };
 
 // Exponential Moving Averages settings:
@@ -126,7 +126,7 @@ config.ZERO = {
   // how optimistic is the MACD extrapolation going to be?
   crystalball: 0.00001234,
   // how large is the stats window for sanity checking?
-  window: 4320,
+  window: 1440, // SHOULD NOT be larger than your historySize!!!
   // the difference between the EMAs (to act as triggers)
   thresholds: {
     down: -9999,

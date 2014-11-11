@@ -112,7 +112,7 @@ Copyright (c) 2013-2014 Sarah White (*AKA* **kuzetsa**, *forked 2014 June 25th*)
     GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
-    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+    along with gekko.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 

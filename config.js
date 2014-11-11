@@ -32,15 +32,11 @@ config.watch = {
 //                       CONFIGURING TRADING ADVICE
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// value of p+12 where (p,p+6,p+12) are all prime
-// sexy prime triple: 1427, 1433, 1439 :)
-// 1429 is also prime (1440 minutes per day)
-
 config.tradingAdvisor = {
   enabled: true,
   method: 'ZERO',
   candleSize: 1,
-  historySize: 1440
+  historySize: 2345
 };
 
 // Exponential Moving Averages settings:
@@ -113,24 +109,21 @@ config.x3nikiehihsa = {
   }
 };
 
-// value of p+12 where (p,p+6,p+12) are all prime
-// sexy prime triple: 1427, 1433, 1439 :)
-// 1429 is also prime (1440 minutes per day)
 // ZERO settings:
 config.ZERO = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
-  short: 1427,
-  long: 1433,
-  signal: 1429,
+  short: 257.608488,
+  long: 364.313417,
+  signal: 225.158074,
   // how optimistic is the MACD extrapolation going to be?
-  crystalball: 0.00001234,
+  crystalball: 0.00000173,
   // how large is the stats window for sanity checking?
-  window: 1440, // SHOULD NOT be larger than your historySize!!!
+  window: 2345, // SHOULD NOT be larger than your historySize!!!
   // the difference between the EMAs (to act as triggers)
   thresholds: {
     down: -9999,
-    up: 0.00000001,
+    up: 0.00000042,
   }
 };
 

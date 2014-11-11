@@ -113,9 +113,9 @@ config.x3nikiehihsa = {
 config.ZERO = {
   // EMA weight (α)
   // the higher the weight, the more smooth (and delayed) the line
-  short: 1427,
-  long: 1433,
-  signal: 1429,
+  short: 257.608488,
+  long: 364.313417,
+  signal: 225.158074,
   // how optimistic is the MACD extrapolation going to be?
   crystalball: 0.00001234,
   // how large is the stats window for sanity checking?

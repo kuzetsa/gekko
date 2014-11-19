@@ -1,0 +1,16 @@
+#!/bin/bash
+# kuzetsa's gekko [re]launcher
+
+while true; do 
+  echo [`date +%Y.%m.%d/@%H%M.%S/%Z`] attempting to \(re\)start gekko...
+  sleep 5
+  echo [`date +%Y.%m.%d/@%H%M.%S/%Z`] launching node.js gekko bot NOW
+  echo -e '\n'
+  node gekko
+  echo -e '\n'
+  echo [`date +%Y.%m.%d/@%H%M.%S/%Z`] gekko seems to have stopped, waiting 30 seconds before restarting
+  sleep 5
+  echo [`date +%Y.%m.%d/@%H%M.%S/%Z`] Press Ctrl + C now if you REALLY want to stop gekko
+  sleep 20
+  echo loop starts 5 delay
+done

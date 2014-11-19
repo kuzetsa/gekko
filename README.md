@@ -34,7 +34,32 @@ Gekko also has a plugin system that can do certain things whenever something hap
 - Profit Simulator (paper trader): Hold a fake portfolio and simulate trades based on advice.
 - Redis Beacon: Broadcast events propagating through Gekko on [Redis pub/sub](http://redis.io/topics/pubsub).
 
+<<<<<<< HEAD
 ### Installing Gekko
+||||||| merged common ancestors
+## Supported exchanges
+
+Gekko works on the following exchanges:
+
+- Mt. Gox
+- Bitstamp
+- CEX.io
+- Kraken
+- BTC-e
+- ~~Cryptsy~~ (In the [pipeline](https://github.com/askmike/gekko/pull/200))
+=======
+## Supported exchanges
+
+Gekko works on the following exchanges:
+
+- Mt. Gox
+- Bitstamp
+- CEX.io
+- Kraken
+- BTC-e
+- Bitfinex
+- ~~Cryptsy~~ (In the [pipeline](https://github.com/askmike/gekko/pull/200))
+>>>>>>> 50ed5e840d7a355932bd8ed01410605c35d682ee
 
 Windows user? Here is a [step-by-step guide](https://github.com/kuzetsa/gekko/blob/master/docs/installing_gekko_on_windows.md) on how to get Gekko running on Windows.
 

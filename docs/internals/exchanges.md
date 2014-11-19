@@ -8,7 +8,7 @@ Gekko arranges all communication about when assets need to be bought or sold bet
 
 When you add a new exchange to Gekko you need to expose an object that has methods to query the exchange. This exchange file needs to reside in `gekko/exchanges` and the filename is the slug of the exchange name + `.js`. So for example the exchange for Mt. Gox is explained in `gekko/exchanges/mtgox.js`.
 
-It is advised to use a npm module to query an exchange. This will seperate the abstract API calls from the Gekko specific stuff (In the case of Bitstamp there was no module yet, so I [created one](https://github.com/askmike/bitstamp)).
+It is advised to use a npm module to query an exchange. This will seperate the abstract API calls from the Gekko specific stuff (In the case of Bitstamp, there was no module yet, so askmike [created one](https://github.com/askmike/bitstamp)).
 
 Besides this javascript file a new object needs to be added to `gekko/config.js` in the `config.traders` array. Here you can set the default currency and asset that will be available through the exchange. Keep enabled at false, this is up to the end user.
 

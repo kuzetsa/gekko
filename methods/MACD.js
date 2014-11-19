@@ -4,6 +4,8 @@
 
   (updated a couple of times since, check git history)
 
+  Modified by kuzetsa 2014 June 26 (CEXIO lizards variant)
+
  */
 
 // helpers
@@ -28,9 +30,7 @@ method.init = function() {
   // report it.
   this.trend = {
     direction: 'none',
-    duration: 0,
-    persisted: false,
-    adviced: false
+    duration: 0
   };
 
   // how many candles do we need as a base
@@ -57,11 +57,11 @@ method.log = function() {
   var signal = macd.signal.result;
 
   log.debug('calculated MACD properties for candle:');
-  log.debug('\t', 'short:', macd.short.result.toFixed(digits));
-  log.debug('\t', 'long:', macd.long.result.toFixed(digits));
-  log.debug('\t', 'macd:', diff.toFixed(digits));
-  log.debug('\t', 'signal:', signal.toFixed(digits));
-  log.debug('\t', 'macdiff:', macd.result.toFixed(digits));  
+  log.info('\t', 'short:', macd.short.result.toFixed(digits));
+  log.info('\t', 'long:', macd.long.result.toFixed(digits));
+  log.info('\t', 'macd:', diff.toFixed(digits));
+  log.info('\t', 'signal:', signal.toFixed(digits));
+  log.info('\t', 'macdiff:', macd.result.toFixed(digits));  
 }
 
 method.check = function() {
@@ -80,68 +80,25 @@ method.check = function() {
       // reset the state for the new trend
       this.trend = {
         duration: 0,
-        persisted: false,
         direction: 'up',
-        adviced: false
       };
 
     this.trend.duration++;
 
-    log.debug('In uptrend since', this.trend.duration, 'candle(s)');
+    log.info('In uptrend since', this.trend.duration, 'candle(s)');
 
-    if(this.trend.duration >= settings.thresholds.persistence)
-      this.trend.persisted = true;
-
-    if(this.trend.persisted && !this.trend.adviced) {
-      this.trend.adviced = true;
       this.advice('long');
-    } else
-      this.advice();
-
-  } else if(macddiff < settings.thresholds.down) {
-
-    // new trend detected
-    if(this.trend.direction !== 'down')
-      // reset the state for the new trend
-      this.trend = {
-        duration: 0,
-        persisted: false,
-        direction: 'down',
-        adviced: false
-      };
-
-    this.trend.duration++;
-
-    log.debug('In downtrend since', this.trend.duration, 'candle(s)');
-
-    if(this.trend.duration >= settings.thresholds.persistence)
-      this.trend.persisted = true;
-
-    if(this.trend.persisted && !this.trend.adviced) {
-      this.trend.adviced = true;
-      this.advice('short');
-    } else
-      this.advice();
 
   } else {
 
-    log.debug('In no trend');
+      this.trend = {
+        duration: 0,
+        direction: 'lizards',
+      };
 
-    // we're not in an up nor in a downtrend
-    // but for now we ignore sideways trends
-    // 
-    // read more @link:
-    // 
-    // https://github.com/askmike/gekko/issues/171
 
-    // this.trend = {
-    //   direction: 'none',
-    //   duration: 0,
-    //   persisted: false,
-    //   adviced: false
-    // };
+    this.advice('lizards');
 
-    this.advice();
   }
 }
 

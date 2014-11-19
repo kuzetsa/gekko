@@ -34,10 +34,10 @@ if(util.getArgument('v')) {
 // make sure the current node version is recent enough
 if(!util.recentNode())
   util.die([
-    'Your local version of nodejs is to old. ',
+    'Your local version of nodejs is too old. ',
     'You have ',
     process.version,
-    ' and you need atleast ',
+    ' and you need at least ',
     util.getRequiredNodeVersion()
   ].join(''));
 
@@ -71,6 +71,9 @@ if(
 
 log.info('Gekko v' + util.getVersion(), 'started');
 log.info('I\'m gonna make you rich, Bud Fox.', '\n\n');
+
+// Tell what config file we are using:
+log.info('Using config file: ' + config.resolvedLocation);
 
 var gekkoMode = 'realtime';
 

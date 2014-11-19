@@ -28,6 +28,8 @@ var Manager = function(conf) {
   var Exchange = require('../exchanges/' + this.exchangeSlug);
   this.exchange = new Exchange(conf);
 
+  this.limiter = (new Date()).getTime();
+
   this.conf = conf;
   this.portfolio = {};
   this.fee;
@@ -118,10 +120,21 @@ Manager.prototype.getBalance = function(fund) {
 // is this a infinityOrderExchange (does it support order
 // requests bigger then the current balance?)
 Manager.prototype.trade = function(what) {
-  if(what !== 'BUY' && what !== 'SELL')
+
+// lizards ALWAYS happen instead of buy orders
+  this.action = what;
+
+  if(what !== 'BUY')
     return;
 
-  this.action = what;
+
+// is it time yet?
+var rightnow = (new Date()).getTime();
+  if(rightnow <= this.limiter)
+    return;
+
+// ok, so reset the limiter
+this.limiter = (new Date()).getTime() + 9000;
 
   var act = function() {
     var amount, price;
@@ -131,8 +144,13 @@ Manager.prototype.trade = function(what) {
       // do we need to specify the amount we want to buy?
       if(this.infinityOrderExchange)
         amount = 10000;
-      else
-        amount = this.getBalance(this.currency) / this.ticker.ask;
+      else {
+        amount = 1 - this.fee;
+        amount = (100000000 * amount * this.getBalance(this.currency)) - 2;
+        amount = Math.floor(Math.floor(amount) / this.ticker.ask) - 1;
+        amount = Math.max(0, amount);
+        amount /= 100000000;
+      }
 
       // can we just create a MKT order?
       if(this.directExchange)
@@ -141,6 +159,7 @@ Manager.prototype.trade = function(what) {
         price = this.ticker.ask;
 
       this.buy(amount, price);
+
 
     } else if(what === 'SELL') {
 
@@ -155,8 +174,10 @@ Manager.prototype.trade = function(what) {
         price = false;
       else
         price = this.ticker.bid;
-      
-      this.sell(amount, price);
+
+    //  LIZARD!!!      
+    //  this.sell(amount, price);
+
     }
   };
   async.series([
@@ -179,7 +200,7 @@ Manager.prototype.getMinimum = function(price) {
 Manager.prototype.buy = function(amount, price) {
   // sometimes cex.io specifies a price w/ > 8 decimals
   price *= 100000000;
-  price = Math.floor(price);
+  price = Math.ceil(price);
   price /= 100000000;
 
   var currency = this.getFund(this.currency);
@@ -189,10 +210,10 @@ Manager.prototype.buy = function(amount, price) {
   // if not suficient funds
   if(amount > availabe) {
     return log.info(
-      'Wanted to buy but insufficient',
+      'Insufficient',
       this.currency,
-      '(' + availabe + ')',
-      'at',
+      '(' + availabe.toFixed(8) + ')',
+      'to BUY at',
       this.exchange.name
     );
   }
@@ -200,18 +221,17 @@ Manager.prototype.buy = function(amount, price) {
   // if order to small
   if(amount < minimum) {
     return log.info(
-      'Wanted to buy',
-      this.asset,
-      'but the amount is too small',
-      '(' + amount + ')',
+      'Ignore tiny',
+      '(' + amount.toFixed(8) + ' ' + this.asset + ')',
+      'BUY order',
       'at',
       this.exchange.name
     );
   }
 
   log.info(
-    'Attempting too BUY',
-    amount,
+    'Placing BUY order for',
+    amount.toFixed(8),
     this.asset,
     'at',
     this.exchange.name
@@ -225,7 +245,7 @@ Manager.prototype.buy = function(amount, price) {
 Manager.prototype.sell = function(amount, price) {
   // sometimes cex.io specifies a price w/ > 8 decimals
   price *= 100000000;
-  price = Math.ceil(price);
+  price = Math.floor(price);
   price /= 100000000;
 
   var minimum = this.getMinimum(price);
@@ -236,7 +256,7 @@ Manager.prototype.sell = function(amount, price) {
     return log.info(
       'Wanted to buy but insufficient',
       this.asset,
-      '(' + availabe + ')',
+      '(' + availabe.toFixed(8) + ')',
       'at',
       this.exchange.name
     );
@@ -248,7 +268,7 @@ Manager.prototype.sell = function(amount, price) {
       'Wanted to buy',
       this.currency,
       'but the amount is too small',
-      '(' + amount + ')',
+      '(' + amount.toFixed(8) + ')',
       'at',
       this.exchange.name
     );
@@ -296,7 +316,7 @@ Manager.prototype.checkOrder = function() {
 Manager.prototype.logPortfolio = function() {
   log.info(this.exchange.name, 'portfolio:');
   _.each(this.portfolio, function(fund) {
-    log.info('\t', fund.name + ':', fund.amount);
+    log.info('\t', fund.name + ':', fund.amount.toFixed(8));
   });
 }
 
@@ -312,6 +332,12 @@ Manager.prototype.recheckPortfolio = function() {
 // the asset (GHS) as we are assuming the value
 // of the asset will go up.
 Manager.prototype.enforcePosition = function() {
+
+log.info('refreshed', this.exchange.name, 'portfolio:');
+_.each(this.portfolio, function(fund) {
+	log.info('\t', fund.name + ':', fund.amount.toFixed(8));
+});
+
   if(this.action !== 'BUY')
     return;
 

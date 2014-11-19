@@ -79,6 +79,30 @@ var actors = [
     }]
   },
   {
+    name: 'Mandrill Mailer',
+    description: 'Mandrill Mail module lets sends you email yourself everytime Gekko has new advice.',
+    slug: 'mandrillMailer',
+    async: true,
+    silent: false,
+    modes: ['realtime'],
+    dependencies: [{
+      module: 'mandrill-api',
+      version: '1.0.40'
+    }]
+  },
+  {
+    name: 'SMS Plivo',
+    description: 'SMS module to text yourself everytime Gekko has new advice. Uses Plivo.',
+    slug: 'smsPlivo',
+    async: true,
+    silent: false,
+    modes: ['realtime'],
+    dependencies: [{
+      module: 'plivo',
+      version: '0.1.0'
+    }]
+  },
+  {
     name: 'Trader',
     description: 'Trader will follow the advice and create real orders.',
     slug: 'trader',

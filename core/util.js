@@ -16,6 +16,7 @@ var util = {
 
     var configFile = path.resolve(util.getArgument('config') || __dirname + '/../config.js');
     _config = require(configFile);
+    _config.resolvedLocation = configFile;
     return _config;
   },
   // overwrite the whole config

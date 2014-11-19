@@ -231,6 +231,25 @@ config.mailer = {
   tls: false        // Use TLS if true
 }
 
+config.mandrillMailer = {
+  enabled: false,
+  sendMailOnStart: true,
+  to: '', // to email
+  toName: 'Gekko user',
+  from: '', // from email
+  fromName: 'Gekko bot info',
+  apiKey: '', // Mandrill api key
+}
+
+config.smsPlivo = {
+  enabled: false,
+  sendMailOnStart: true,
+  smsPrefix: 'GEKKO:', // always start SMS message with this
+  to: '', // your SMS number
+  from: '', // SMS number to send from provided by Plivo
+  authId: '', // your Plivo auth ID
+  authToken: '' // your Plivo auth token
+}
 
 config.ircbot = {
   enabled: false,

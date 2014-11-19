@@ -72,6 +72,9 @@ if(
 log.info('Gekko v' + util.getVersion(), 'started');
 log.info('I\'m gonna make you rich, Bud Fox.', '\n\n');
 
+// Tell what config file we are using:
+log.info('Using config file: ' + config.resolvedLocation);
+
 var gekkoMode = 'realtime';
 
 // currently we only support a single 

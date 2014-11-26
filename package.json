@@ -24,7 +24,8 @@
     "nedb": "0.9.4",
     "line-reader": "0.2.x",
     "semver": "2.2.1",
-    "kraken-api" :"0.1.x"
+    "kraken-api": "0.1.x",
+    "lakebtc_nodejs": "0.1.x"
   },
   "devDependencies": {
     "nodeunit": "0.8.2"

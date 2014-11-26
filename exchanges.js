@@ -300,6 +300,22 @@ var exchanges = [
     // TODO: should be possible to enable this for Bitfinex?
     providesHistory: false
     // fetchTimespan: 60
+  },
+  {
+    name: 'LakeBTC',
+    slug: 'lakebtc',
+    direct: false,
+    infinityOrder: false,
+    currencies: ['USD'],
+    assets: ['BTC'],
+    markets: [
+      {
+        pair: ['USD', 'BTC'], minimalOrder: { amount: 1, unit: 'currency' }
+      }
+    ],
+    requires: ['key', 'secret'],
+    providesHistory: false,
+    fetchTimespan: 60
   }
 ];
 

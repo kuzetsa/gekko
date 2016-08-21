@@ -57,6 +57,27 @@ var Indicators = {
   CCI: {
     factory: require(indicatorsPath + 'CCI'),
     input: 'candle'
+  },
+
+  ZERO: {
+    factory: require(indicatorsPath + 'ZERO'),
+    input: 'candle'
+  },
+  x3nikiehihsa: {
+    factory: require(indicatorsPath + 'x3nikiehihsa'),
+    input: 'candle'
+  },
+  nikiehihsa: {
+	factory: require(indicatorsPath + 'nikiehihsa'),
+	input: 'candle'
+  },
+  x2MACD: {
+    factory: require(indicatorsPath + 'x2MACD'),
+    input: 'price'
+  },
+  Alligator: {
+	    factory: require(indicatorsPath + 'Alligator'),
+	    input: 'candle'
   }
 };
 

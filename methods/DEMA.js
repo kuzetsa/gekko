@@ -11,6 +11,8 @@ var method = {};
 
 // prepare everything our method needs
 method.init = function() {
+  this.name = 'DEMA';
+
   this.currentTrend;
   this.requiredHistory = config.tradingAdvisor.historySize;
 
@@ -38,7 +40,6 @@ method.log = function() {
 }
 
 method.check = function() {
-
   var dema = this.indicators.dema;
   var diff = dema.result;
   var price = this.lastPrice;

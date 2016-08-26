@@ -186,3 +186,4 @@ Trader.prototype.cancelOrder = function(order) {
 }
 
 module.exports = Trader;
+

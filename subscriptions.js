@@ -1,9 +1,6 @@
 // 
-// Subscriptions glue actors to events
-// flowing through the Gekko. This 
-// specifies how actors can be glued
-// to events and where those events
-// are emitted from (internally).
+// Subscriptions glue plugins to events
+// flowing through the Gekko.
 // 
 
 var subscriptions = [
@@ -28,7 +25,7 @@ var subscriptions = [
     handler: 'processHistory'
   },
   {
-    emitter: 'advisor',
+    emitter: 'tradingAdvisor',
     event: 'advice',
     handler: 'processAdvice'
   }

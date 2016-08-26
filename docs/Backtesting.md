@@ -1,52 +1,68 @@
-**These are old docs referrring to the old stable master branch on Gekko. The backtester is broken in this branch**
-
 # Backtesting with Gekko
 
-**Note that this functionality should only be used for testing purposes at this moment as it's in early development stage**
+Gekko is able to backtest strategies against historical data.
 
-After you configured and run the backtester Gekko will output the results like so:
+## Setup
 
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) start time:                  2013-04-24 07:00:00
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) end time:                    2013-05-23 16:00:00
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) timespan:                    29 days
+For backtesting you should [enable and configure](./Plugins.md) the following plugins:
 
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) start price:                 121.6
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) end price:                   125.44
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) Buy and Hold profit:         3.158%
+ - trading advisor (to run your strategy)
+ - profit simulator (to calculate how succesfull the strategy would have been)
 
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) amount of trades:            15
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) original simulated balance:  245.404 USD
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) current simulated balance:   281.819 USD
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) simulated profit:            36.415 USD (14.839%)
-    2013-06-30 13:25:30 (INFO): (PROFIT REPORT) simulated yearly profit:     447.030 USD (182.161%)
+Besides that, make sure to configure `config.watch`.
 
-## Preparing Gekko
+## Historical data
 
-You can configure Gekko to test the current EMA strategy on historical data. To do this you need candle data in CSV format. On [this webpage](https://bitcointalk.org/index.php?topic=239815.0) you can downloaded precalculated candles from Mt. Gox or you can calculate your own using the script provided in the link. Alternatively you can supply your own candles, the only requirement is that the csv file has candles ordered like this: `timestamp,open,high,low,close`.
+Gekko requires historical data to backtest strategies against. The easiest way to get this is to let Gekko import historical data, however this is not supported by a lot of exchanges (see [here](https://github.com/askmike/gekko#supported-exchanges)). The second easiest and most universal way is to run Gekko on real markets with the plugin sqliteWriter enabled (this will cause Gekko to store realtime data on disk).
 
-## Configuring Gekko
+## Configure
 
-Once you have the csv file with candles you can configure Gekko for backtesting: in [config.js](https://github.com/askmike/gekko/blob/master/config.js) in the advanced zone you need to the backtesting part like so:
+In your config set the `backtest.daterange` to `scan`. This will force Gekko to scan the local database to figure out what dataranges are available. If you already know exactly what  daterange you would like to backtest against, you can set the `backtest.daterange` directly.
 
-    config.backtest = {
-      candleFile: 'candles.csv', // the candles file
-      from: 0, // optional start timestamp 
-      to: 0 // optional end timestamp
-    }
+## Run
 
-Once configured Gekko will run the backtest instead of watching the live market. It wil use the following configuration items:
+    node gekko --backtest
 
-* Everything under `backtest`.
-* Everything under `profitCalculator`.
-* Everything under `EMA` with the exception of interval, as this will be determined by the candles file.
+The result will be something like this:
 
-## Running the backtester
+    2016-06-11 08:53:20 (INFO): Gekko v0.2.1 started
+    2016-06-11 08:53:20 (INFO): I'm gonna make you rich, Bud Fox.
 
-Instead of running the paper / live trading Gekko using `node gekko`, you can start the backtester by running:
+    2016-06-11 08:53:20 (INFO): Setting up Gekko in backtest mode
+    2016-06-11 08:53:20 (INFO):
+    2016-06-11 08:53:20 (WARN): The plugin SQLite Datastore does not support the mode backtest. It has been disabled.
+    2016-06-11 08:53:20 (INFO): Setting up:
+    2016-06-11 08:53:20 (INFO):    Trading Advisor
+    2016-06-11 08:53:20 (INFO):    Calculate trading advice
+    2016-06-11 08:53:20 (INFO):    Using the trading method: DEMA
+    2016-06-11 08:53:20 (INFO):
 
-    node gekko-backtest
+    2016-06-11 08:53:20 (INFO): Setting up:
+    2016-06-11 08:53:20 (INFO):    Profit Simulator
+    2016-06-11 08:53:20 (INFO):    Paper trader that logs fake profits.
+    2016-06-11 08:53:20 (INFO):
 
-## Notes
+    2016-06-11 08:58:20 (INFO): Profit simulator got advice to long @ 2016-05-30 04:37:00, buying 1.1880062 BTC
+    2016-06-11 08:58:21 (INFO): Profit simulator got advice to short  @ 2016-05-31 21:37:00, selling 1.1880062 BTC
+    2016-06-11 08:58:21 (INFO): Profit simulator got advice to long @ 2016-06-01 12:37:00, buying 1.14506098 BTC
+    2016-06-11 08:58:21 (INFO): Profit simulator got advice to short  @ 2016-06-02 14:57:00, selling 1.14506098 BTC
+    2016-06-11 08:58:21 (INFO): Profit simulator got advice to long @ 2016-06-02 23:37:00, buying 1.11711818 BTC
+    2016-06-11 08:58:21 (INFO): Profit simulator got advice to short  @ 2016-06-05 12:57:00, selling 1.11711818 BTC
+    2016-06-11 08:58:21 (INFO): Profit simulator got advice to long @ 2016-06-06 02:37:00, buying 1.08456953 BTC
+    2016-06-11 08:58:22 (INFO): Profit simulator got advice to short  @ 2016-06-07 17:17:00, selling 1.08456953 BTC
+    2016-06-11 08:58:22 (INFO): Profit simulator got advice to long @ 2016-06-08 13:17:00, buying 1.05481755 BTC
+    2016-06-11 08:58:22 (INFO): Profit simulator got advice to short  @ 2016-06-09 14:17:00, selling 1.05481755 BTC
 
-* Use the backtesting feature only for testing until the code is stable.
-* When there are missing candles Gekko will act as if the whole duration of the missing candle never happened.
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) start time:      2016-05-29 23:34:00
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) end time:      2016-06-10 08:56:00
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) timespan:      11 days days
+
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) start price:       516.19
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) end price:       578.97
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) Buy and Hold profit:     12.162189999999995%
+
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) amount of trades:    10
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) original simulated balance:  616.19000 USD
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) current simulated balance:   602.59867 USD
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) simulated profit:    -13.59133 USD (-2.20570%)
+    2016-06-11 08:53:22 (INFO): (PROFIT REPORT) simulated yearly profit:   -435.53244 USD (-70.68152%)

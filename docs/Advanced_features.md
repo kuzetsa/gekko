@@ -65,15 +65,15 @@ You can also use this feature to do a realtime study on what different EMA setti
 
 To specify a different config file, you can use the following command line argument:
 
-    node gekko config=config/user/alternative-config
+    node gekko --config config/user/alternative-config
 
 or a relative path:
 
-    node gekko config=../../alternative-config
+    node gekko --config ../../alternative-config
 
 or a static path:
 
-    node gekko config=home/gekko/config/user/alternative-config
+    node gekko --config home/gekko/config/user/alternative-config
 
 # Helper files
 
@@ -89,4 +89,4 @@ Use `gekko_log_grab.sh` to start tailing the log instead of via screen.  The syn
 
 # Building on top of the Gekko platform
 
-Gekko is built around an event emitting architecture. Those events glue core together and provide an API for [additional plugins](https://github.com/askmike/gekko/blob/master/docs/internals/plugins.md). On default the events stay within a single Gekko (a single nodejs process), though using the [Redis Beacon plugin](https://github.com/askmike/gekko/blob/master/docs/internals/plugins.md#redis-beacon) all events can be broadcasted on the Redis Pub/Sub system. This makes it a breeze to integrate Gekko in your own applications (which can live outside the Gekko process, outside any nodejs environment and across a network / cluster on different hosts - use your imagination).
+Gekko is built around an event emitting architecture. Those events glue core together and provide an API for [additional plugins](https://github.com/askmike/gekko/blob/stable/docs/internals/plugins.md). On default the events stay within a single Gekko (a single nodejs process), though using the [Redis Beacon plugin](https://github.com/askmike/gekko/blob/stable/docs/internals/plugins.md#redis-beacon) all events can be broadcasted on the Redis Pub/Sub system. This makes it a breeze to integrate Gekko in your own applications (which can live outside the Gekko process, outside any nodejs environment and across a network / cluster on different hosts - use your imagination).
